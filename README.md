@@ -17,10 +17,16 @@ This file documents the operation and construction of the backend of the project
 
 This is the model designed and used for the database built in MongoDB.
 
+![Data model](/docs/Screenshots/DataModel.drawio.png)
+
 </br>
 
 ## Physic Data Model
 
 </br>
 
-##
+## Architecture
+
+The architecture represented in the image is a client-server architecture with a RESTful API; this maintains the construction of model, view, and controller, but with the backend and frontend decoupled.
+
+![Archotecture](/docs/Screenshots/Arquitectura.drawio.png)
