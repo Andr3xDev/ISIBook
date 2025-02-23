@@ -15,13 +15,9 @@ This file documents the operation and construction of the backend of the project
 
 ## Data Model
 
-This is the model designed and used for the database built in MongoDB.
+This is the model designed and used for reference of the database built in MongoDB. Also, it works as Physic Data Model
 
 ![Data model](/docs/Screenshots/DataModel.drawio.png)
-
-</br>
-
-## Physic Data Model
 
 </br>
 
