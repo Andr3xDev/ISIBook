@@ -5,8 +5,12 @@ import java.sql.Date;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+//TODO: Finish date attribute
+//TODO: Contect BD
+
+//@Document();
 public class User {
-    @Document();
+
     @Id
     private int id;
     private String name;
@@ -16,8 +20,11 @@ public class User {
     private String status;
     private Date register;
 
-    public User(String userName, String passwd) {
+    public User(String userName, String passwd, String mail, String type) {
         this.name = userName;
         this.passwd = passwd;
+        this.mail = mail;
+        this.type = type;
+        this.status = "Active";
     }
 }
