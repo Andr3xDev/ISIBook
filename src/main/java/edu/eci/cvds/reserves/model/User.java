@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 //TODO: Contect BD
 
-//@Document();
+@Document(collection = "users")
 public class User {
 
     @Id
