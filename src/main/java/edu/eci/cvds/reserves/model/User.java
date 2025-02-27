@@ -1,39 +1,19 @@
 package edu.eci.cvds.reserves.model;
 
-import java.sql.Date; //Eliminate after complete the time bug
+import java.time.LocalDateTime;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+public abstract class User {
 
-//TODO: Contect BD
+    protected String name;
+    protected String password;
+    protected String userName;
+    protected LocalDateTime register;
 
-@Document(collection = "users")
-public class User {
-
-    @Id
-    private int id;
-    private String name;
-    private String passwd;
-    private String mail;
-    private String type;
-    private String status;
-    private Date register;
-
-    public User(String userName, String passwd, String mail, String type) {
-        this.name = userName;
-        this.passwd = passwd;
-        this.mail = mail;
-        this.type = type;
-        this.status = "Active";
-        this.register = new Date(id); // TODO: Set correct date
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    protected User(String name, String userName, String password) {
+        this.name = name;
+        this.userName = userName;
+        this.password = password;
+        this.register = LocalDateTime.now();
     }
 
     public String getName() {
@@ -44,44 +24,24 @@ public class User {
         this.name = name;
     }
 
-    public String getPasswd() {
-        return passwd;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasswd(String passwd) {
-        this.passwd = passwd;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getMail() {
-        return mail;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setMail(String mail) {
-        this.mail = mail;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Date getRegister() {
+    public LocalDateTime getRegister() {
         return register;
-    }
-
-    public void setRegister(Date register) {
-        this.register = register;
     }
 
 }
