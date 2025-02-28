@@ -2,6 +2,9 @@ package edu.eci.cvds.reserves.model;
 
 import java.time.LocalDateTime;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "users")
 public abstract class User {
 
     protected String name;
