@@ -4,6 +4,11 @@ import java.time.LocalDateTime;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @Document(collection = "users")
 public abstract class User {
 
@@ -17,34 +22,6 @@ public abstract class User {
         this.userName = userName;
         this.password = password;
         this.register = LocalDateTime.now();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public LocalDateTime getRegister() {
-        return register;
     }
 
 }
