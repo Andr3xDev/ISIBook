@@ -1,6 +1,8 @@
 package edu.eci.cvds.reserves.service;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -124,6 +126,12 @@ class UserServiceTest {
 
         assertNotNull(targetUser);
         assertEquals(teacher.getUserName(), targetUser.getUserName());
+    }
+
+    @Test
+    void shouldUpdateUserStatus() {
+        userService.updateStatusByUserName(teacher.getUserName(), "Suspended");
+        verify(userRepository, times(1)).updateStatusByUserName(teacher.getUserName(), "Suspended");
     }
 
 }
