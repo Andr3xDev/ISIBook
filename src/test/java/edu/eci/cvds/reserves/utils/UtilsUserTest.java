@@ -21,58 +21,58 @@ class UtilsUserTest {
 
     @Test
     void shouldCreateAdmin() {
-        assertDoesNotThrow(() -> {
-            Map<String, String> adminParams = Map.of(
-                    "name", "Super Admin",
-                    "userName", "adminUser",
-                    "passwd", "adminPass");
+        Map<String, String> adminParams = Map.of(
+                "name", "Super Admin",
+                "userName", "adminUser",
+                "passwd", "adminPass");
 
+        assertDoesNotThrow(() -> {
             userFactory.createUser("Admin", adminParams);
         });
     }
 
     @Test
     void shouldNotCreateAdmin() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            Map<String, String> adminParams = Map.of(
-                    "name", "Super Admin",
-                    "userName", "adminUser");
+        Map<String, String> adminParams = Map.of(
+                "name", "Super Admin",
+                "userName", "adminUser");
 
+        assertThrows(IllegalArgumentException.class, () -> {
             userFactory.createUser("Admin", adminParams);
         });
     }
 
     @Test
     void shouldCreateTeache() {
-        assertDoesNotThrow(() -> {
-            Map<String, String> teacherParams = Map.of(
-                    "name", "Super Admin",
-                    "userName", "adminUser",
-                    "mail", "asd@mail.com",
-                    "passwd", "adminPass");
+        Map<String, String> teacherParams = Map.of(
+                "name", "Super Admin",
+                "userName", "adminUser",
+                "mail", "asd@mail.com",
+                "passwd", "adminPass");
 
+        assertDoesNotThrow(() -> {
             userFactory.createUser("teacher", teacherParams);
         });
     }
 
     @Test
     void shouldNotCreateTeacher() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            Map<String, String> teacherParams = Map.of(
-                    "name", "Super Admin",
-                    "userName", "adminUser");
+        Map<String, String> teacherParams = Map.of(
+                "name", "",
+                "userName", "adminUser");
 
+        assertThrows(IllegalArgumentException.class, () -> {
             userFactory.createUser("Teacher", teacherParams);
         });
     }
 
     @Test
     void shouldNotCreateUser() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            Map<String, String> studentParams = Map.of(
-                    "name", "Super Admin",
-                    "userName", "adminUser");
+        Map<String, String> studentParams = Map.of(
+                "name", "Super Admin",
+                "userName", "adminUser");
 
+        assertThrows(IllegalArgumentException.class, () -> {
             userFactory.createUser("Student", studentParams);
         });
     }
