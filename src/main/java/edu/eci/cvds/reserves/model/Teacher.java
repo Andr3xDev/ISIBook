@@ -12,7 +12,7 @@ import lombok.Setter;
 public class Teacher extends User {
 
     @Id
-    private int id;
+    private String id;
     private String mail;
     private String status;
     private String type;
@@ -24,4 +24,11 @@ public class Teacher extends User {
         this.type = "Teacher";
     }
 
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 }

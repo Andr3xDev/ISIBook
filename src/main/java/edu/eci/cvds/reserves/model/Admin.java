@@ -12,7 +12,7 @@ import lombok.Setter;
 public class Admin extends User {
 
     @Id
-    private int id;
+    private String id;
     private String type;
 
     public Admin(String name, String userName, String passwd) {
@@ -20,4 +20,11 @@ public class Admin extends User {
         this.type = "Admin";
     }
 
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 }
