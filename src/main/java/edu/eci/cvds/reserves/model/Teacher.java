@@ -3,30 +3,32 @@ package edu.eci.cvds.reserves.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "teachers")
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Document(collection = "users")
 public class Teacher extends User {
 
     @Id
-    private int id;
+    private String id;
     private String mail;
     private String status;
+    private String type;
 
     public Teacher(String name, String userName, String mail, String passwd) {
         super(name, userName, passwd);
         this.mail = mail;
         this.status = "Active";
+        this.type = "Teacher";
     }
 
-    public String getMail() {
-        return mail;
+    public String getId() {
+        return this.id;
     }
 
-    public String getStatus() {
-        return status;
+    public void setId(String id) {
+        this.id = id;
     }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
 }
