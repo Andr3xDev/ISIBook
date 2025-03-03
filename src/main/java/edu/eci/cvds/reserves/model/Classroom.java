@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Document(collection = "classrooms")
-public class Classrooms {
+public class Classroom {
 
     @Id
     private String id;
@@ -18,7 +18,7 @@ public class Classrooms {
     // private Specs specs;
     // private Schedule schedule;
 
-    public Classrooms(String id, String name, String type) {
+    public Classroom(String id, String name, String type) {
         this.id = id;
         this.name = name;
         this.type = type;
