@@ -43,7 +43,7 @@ class UtilsUserTest {
     }
 
     @Test
-    void shouldCreateTeache() {
+    void shouldCreateTeacher() {
         Map<String, String> teacherParams = Map.of(
                 "name", "Super Admin",
                 "userName", "adminUser",
