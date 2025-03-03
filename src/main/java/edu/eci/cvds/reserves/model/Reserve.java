@@ -1,30 +1,25 @@
 package edu.eci.cvds.reserves.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.time.LocalDateTime;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Document(collection = "reserves")
-public class Reserve {
+public class Reserve{
     @Id
     private String id;
     private String userId;
     private String classroomId;
     private LocalDateTime startDate;
-    private LocalDateTime endDate;
-
-    public Reserve(String userId, String classroomId, LocalDateTime startDate, LocalDateTime endDate) {
-        this.userId = userId;
-        this.classroomId = classroomId;
-        this.startDate = startDate;
-        this.endDate = endDate;
-    }
+    private LocalDateTime finishDate;
+    private String status;
+    private boolean repetitive;
+    private String purpose;  // <-- Se cambió de 'Text' a 'String'
+    private String repetitiveTime;
 }
 

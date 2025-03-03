@@ -3,7 +3,6 @@ package edu.eci.cvds.reserves.service;
 import edu.eci.cvds.reserves.model.Reserve;
 import edu.eci.cvds.reserves.repository.ReserveRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
