@@ -12,7 +12,7 @@ public class ClassroomService {
     @Autowired
     ClassroomRepository classroomRepository;
 
-    public Classroom createClassroom() {
-        return null;
+    public Classroom createClassroom(Classroom classroom) {
+        return classroomRepository.save(classroom);
     }
 }

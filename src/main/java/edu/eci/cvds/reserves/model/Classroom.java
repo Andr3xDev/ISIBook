@@ -15,8 +15,8 @@ public class Classroom {
     private String id;
     private String name;
     private String type;
-    // private Specs specs;
-    // private Schedule schedule;
+    private Specs specs;
+    private Schedule schedule;
 
     public Classroom(String id, String name, String type) {
         this.id = id;
