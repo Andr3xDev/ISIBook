@@ -44,8 +44,7 @@ public class ReserveController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteReserve(@PathVariable String id) {
-        boolean deleted = reserveService.deleteReserve(id);
-        return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    public void deleteReserve(@PathVariable String id) {
+        reserveService.deleteReserve(id);
     }
 }

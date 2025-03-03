@@ -31,7 +31,7 @@ public class ReserveServiceTest {
 
     @BeforeEach
     void setUp() {
-        testReserve = new Reserve("1", "Pedro", "LabIco", LocalDateTime.now(), LocalDateTime.now().plusHours(2), "Pending", false, "Study", "None");
+        testReserve = new Reserve ("Pedro", "LabIco", LocalDateTime.now(), LocalDateTime.now().plusHours(2), "Pending", false, "Study", "None");
     }
 
     @Test
@@ -71,22 +71,18 @@ public class ReserveServiceTest {
 
     @Test
     void testDeleteReserve_Success() {
-        when(reserveRepository.existsById("1")).thenReturn(true);
         doNothing().when(reserveRepository).deleteById("1");
 
-        boolean deleted = reserveService.deleteReserve("1");
+        reserveService.deleteReserve("1");
 
-        assertTrue(deleted);
         verify(reserveRepository, times(1)).deleteById("1");
     }
 
     @Test
     void testDeleteReserve_Failure() {
-        when(reserveRepository.existsById("2")).thenReturn(false);
-
-        boolean deleted = reserveService.deleteReserve("2");
-
-        assertFalse(deleted);
+        reserveService.deleteReserve("2");
         verify(reserveRepository, never()).deleteById("2");
     }
+
+
 }
