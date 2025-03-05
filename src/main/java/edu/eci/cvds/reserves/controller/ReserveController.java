@@ -47,4 +47,12 @@ public class ReserveController {
     public void deleteReserve(@PathVariable String id) {
         reserveService.deleteReserve(id);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Reserve> updateReserve(@PathVariable String id, @RequestBody Reserve updatedReserve) {
+        return reserveService.updateReserve(id, updatedReserve)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
 }

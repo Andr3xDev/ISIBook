@@ -46,4 +46,19 @@ public class ReserveService {
             //}
         //}
     }
+    public Optional<Reserve> updateReserve(String id, Reserve updatedReserve) {
+        return reserveRepository.findById(id).map(existingReserve -> {
+            existingReserve.setUserId(updatedReserve.getUserId());
+            existingReserve.setClassroomId(updatedReserve.getClassroomId());
+            existingReserve.setStartDate(updatedReserve.getStartDate());
+            existingReserve.setFinishDate(updatedReserve.getFinishDate());
+            existingReserve.setStatus(updatedReserve.getStatus());
+            existingReserve.setRepetitive(updatedReserve.isRepetitive());
+            existingReserve.setPurpose(updatedReserve.getPurpose());
+            existingReserve.setRepetitiveTime(updatedReserve.getRepetitiveTime());
+
+            return reserveRepository.save(existingReserve);
+        });
+    }
+
 }
