@@ -15,4 +15,8 @@ public class ClassroomService {
     public Classroom createClassroom(Classroom classroom) {
         return classroomRepository.save(classroom);
     }
+
+    public Classroom getClassroomById(String id) {
+        return classroomRepository.findById(id).orElseThrow(() -> new RuntimeException("Salón no encontrado"));
+    }
 }

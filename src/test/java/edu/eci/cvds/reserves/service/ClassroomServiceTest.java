@@ -6,6 +6,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -42,6 +44,17 @@ class ClassroomServiceTest {
         assertNotNull(newClassroom);
         assertEquals("1", newClassroom.getId());
         verify(classroomRepository, times(1)).save(classroom);
+    }
+
+    @Test
+    void shouldGetClassroomById() {
+        classroom.setId("1");
+        when(classroomRepository.findById("1")).thenReturn(Optional.of(classroom));
+        Classroom newClassroom = classroomService.getClassroomById("1");
+
+        assertNotNull(newClassroom);
+        assertEquals("1", newClassroom.getId());
+        verify(classroomRepository, times(1)).findById("1");
     }
 
 }
