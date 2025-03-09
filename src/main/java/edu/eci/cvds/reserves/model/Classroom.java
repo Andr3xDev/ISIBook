@@ -3,12 +3,16 @@ package edu.eci.cvds.reserves.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
 @Document(collection = "classrooms")
+@Data
+@NoArgsConstructor
+@Setter
+@AllArgsConstructor
 public class Classroom {
 
     @Id
@@ -17,11 +21,5 @@ public class Classroom {
     private String type;
     private Specs specs;
     private Schedule schedule;
-
-    public Classroom(String id, String name, String type) {
-        this.id = id;
-        this.name = name;
-        this.type = type;
-    }
 
 }
