@@ -1,6 +1,8 @@
 package edu.eci.cvds.reserves.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,5 +21,11 @@ public class ClassroomController {
     @PostMapping
     public Classroom createUser(@RequestBody Classroom classroom) {
         return classroomService.createClassroom(classroom);
+    }
+
+    @GetMapping
+    public ResponseEntity<Classroom> findClassroomById(String id) {
+        Classroom classroom = classroomService.getClassroomById(id);
+        return ResponseEntity.ok(classroom);
     }
 }
