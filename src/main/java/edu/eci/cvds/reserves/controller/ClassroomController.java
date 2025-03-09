@@ -24,8 +24,11 @@ public class ClassroomController {
     }
 
     @GetMapping
-    public ResponseEntity<Classroom> findClassroomById(String id) {
+    public ResponseEntity<?> findClassroomById(String id) {
         Classroom classroom = classroomService.getClassroomById(id);
+        if (classroom == null || classroom.getId().isEmpty()) {
+            return ResponseEntity.badRequest().body("Not");
+        }
         return ResponseEntity.ok(classroom);
     }
 }
