@@ -1,5 +1,7 @@
 package edu.eci.cvds.reserves.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,5 +20,9 @@ public class ClassroomService {
 
     public Classroom getClassroomById(String id) {
         return classroomRepository.findById(id).orElseThrow(() -> new RuntimeException("Salón no encontrado"));
+    }
+
+    public List<Classroom> getAllClassroom() {
+        return classroomRepository.findAll();
     }
 }

@@ -1,5 +1,8 @@
 package edu.eci.cvds.reserves.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,8 +30,18 @@ public class ClassroomController {
     public ResponseEntity<?> findClassroomById(String id) {
         Classroom classroom = classroomService.getClassroomById(id);
         if (classroom == null || classroom.getId().isEmpty()) {
-            return ResponseEntity.badRequest().body("Not");
+            return ResponseEntity.badRequest().body("Classroom not found");
         }
         return ResponseEntity.ok(classroom);
     }
+
+    @GetMapping
+    public ResponseEntity<?> findAllClassrooms() {
+        List<Classroom> classrooms = classroomService.getAllClassroom();
+        if (classrooms == null) {
+            return ResponseEntity.badRequest().body("There are not classrooms");
+        }
+        return ResponseEntity.ok(classrooms);
+    }
+
 }

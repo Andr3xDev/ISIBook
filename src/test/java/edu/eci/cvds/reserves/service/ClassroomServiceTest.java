@@ -6,6 +6,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +22,8 @@ import edu.eci.cvds.reserves.repository.ClassroomRepository;
 class ClassroomServiceTest {
 
     Classroom classroom;
+    Classroom classroom2;
+    List<Classroom> classrooms;
 
     @Mock
     private ClassroomRepository classroomRepository;
@@ -31,6 +35,8 @@ class ClassroomServiceTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         classroom = new Classroom();
+        classroom2 = new Classroom();
+        classrooms = new ArrayList<>();
     }
 
     @Test
@@ -55,6 +61,18 @@ class ClassroomServiceTest {
         assertNotNull(newClassroom);
         assertEquals("1", newClassroom.getId());
         verify(classroomRepository, times(1)).findById("1");
+    }
+
+    @Test
+    void shouldGetAllClassroomById() {
+        classrooms.add(classroom);
+        classrooms.add(classroom2);
+        when(classroomRepository.findAll()).thenReturn(classrooms);
+        List<Classroom> allClassrooms = classroomService.getAllClassroom();
+
+        assertNotNull(allClassrooms);
+        assertEquals(2, allClassrooms.size());
+        verify(classroomRepository, times(1)).findAll();
     }
 
 }
