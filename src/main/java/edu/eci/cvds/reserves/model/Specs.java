@@ -10,4 +10,8 @@ import lombok.Setter;
 @Document(collection = "specs")
 public class Specs {
 
+    private String capacity;
+    private String numComputers;
+    private String PCTypes;
+
 }
