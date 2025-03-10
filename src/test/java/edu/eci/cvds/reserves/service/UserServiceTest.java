@@ -1,6 +1,7 @@
 package edu.eci.cvds.reserves.service;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -29,13 +30,13 @@ class UserServiceTest {
 
     private Map<String, String> paramsTeacher = Map.of(
             "name", "Juan Jose",
-            "userName", "juan.jose-j",
+            "username", "juan.jose-j",
             "mail", "juan.jose-j@escuelaing.edu.co",
             "passwd", "juanito");
 
     private Map<String, String> paramsAdmin = Map.of(
             "name", "Super Admin",
-            "userName", "adminUser",
+            "username", "adminUser",
             "passwd", "adminPass");
 
     @Mock
@@ -59,12 +60,27 @@ class UserServiceTest {
     @Test
     void shouldCreateUserAdmin() {
         when(userRepository.save(admin)).thenReturn(admin);
-        when(userRepository.findByUserName(admin.getUserName())).thenReturn(Optional.of(admin));
-
+        when(userRepository.findByUsername(admin.getUsername())).thenReturn(Optional.of(admin));
         User createdUser = userService.createUser(admin);
 
         assertNotNull(createdUser);
-        assertEquals(admin.getUserName(), createdUser.getUserName());
+        assertEquals(admin.getUsername(), createdUser.getUsername());
+    }
+
+    @Test
+    void shouldDeleteUserByUsername() {
+        when(userRepository.existsByUsername("juan.jose-j")).thenReturn(true);
+
+        assertDoesNotThrow(() -> userService.deleteUserByUsername("juan.jose-j"));
+        verify(userRepository, times(1)).deleteByUsername("juan.jose-j");
+    }
+
+    @Test
+    void shouldNotDeleteUserByUsername() {
+        when(userRepository.existsByUsername("juan.jose-j")).thenReturn(false);
+
+        assertThrows(RuntimeException.class, () -> userService.deleteUserByUsername("juan.jose-j"));
+        verify(userRepository, never()).deleteByUsername("juan.jose-j");
     }
 
     @Test
@@ -117,21 +133,21 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldFindUserByUserName() {
+    void shouldFindUserByusername() {
         when(userRepository.save(teacher)).thenReturn(teacher);
-        when(userRepository.findByUserName(teacher.getUserName())).thenReturn(Optional.of(teacher));
+        when(userRepository.findByUsername(teacher.getUsername())).thenReturn(Optional.of(teacher));
 
         User createdUser = userService.createUser(teacher);
-        User targetUser = userService.findUserByUserName(createdUser.getUserName());
+        User targetUser = userService.findUserByUsername(createdUser.getUsername());
 
         assertNotNull(targetUser);
-        assertEquals(teacher.getUserName(), targetUser.getUserName());
+        assertEquals(teacher.getUsername(), targetUser.getUsername());
     }
 
     @Test
     void shouldUpdateUserStatus() {
-        userService.updateStatusByUserName(teacher.getUserName(), "Suspended");
-        verify(userRepository, times(1)).updateStatusByUserName(teacher.getUserName(), "Suspended");
+        userService.updateStatusByUsername(teacher.getUsername(), "Suspended");
+        verify(userRepository, times(1)).updateStatusByUsername(teacher.getUsername(), "Suspended");
     }
 
 }

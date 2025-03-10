@@ -19,12 +19,20 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public void deleteUserByUsername(String username) {
+        if (userRepository.existsByUsername(username)) {
+            userRepository.deleteByUsername(username);
+        } else {
+            throw new RuntimeException("TODO");
+        }
+    }
+
     public Optional<User> findUserById(String id) {
         return userRepository.findById(id);
     }
 
-    public User findUserByUserName(String userName) {
-        return userRepository.findByUserName(userName).orElse(null);
+    public User findUserByUsername(String username) {
+        return userRepository.findByUsername(username).orElse(null);
     }
 
     public List<User> findAllUserTeacher() {
@@ -39,8 +47,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public void updateStatusByUserName(String userName, String status) {
-        userRepository.updateStatusByUserName(userName, status);
+    public void updateStatusByUsername(String username, String status) {
+        userRepository.updateStatusByUsername(username, status);
     }
 
 }
