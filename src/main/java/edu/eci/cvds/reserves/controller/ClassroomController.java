@@ -44,4 +44,13 @@ public class ClassroomController {
         return ResponseEntity.ok(classrooms);
     }
 
+    @GetMapping
+    public ResponseEntity<?> findAllClassroomsById(String build) {
+        List<Classroom> classrooms = classroomService.getAllClassroomByBuild(build);
+        if (classrooms == null) {
+            return ResponseEntity.badRequest().body("The build does not exist");
+        }
+        return ResponseEntity.ok(classrooms);
+    }
+
 }

@@ -18,6 +18,7 @@ public class Classroom {
     @Id
     private String id;
     private String name;
+    private String build;
     private String type;
     private Specs specs;
     private Schedule schedule;

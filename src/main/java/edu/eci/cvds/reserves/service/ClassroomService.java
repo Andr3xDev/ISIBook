@@ -25,4 +25,8 @@ public class ClassroomService {
     public List<Classroom> getAllClassroom() {
         return classroomRepository.findAll();
     }
+
+    public List<Classroom> getAllClassroomByBuild(String build) {
+        return classroomRepository.findByBuild(build);
+    }
 }

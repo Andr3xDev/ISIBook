@@ -77,15 +77,29 @@ class ClassroomServiceTest {
     }
 
     @Test
-    void shouldGetAllClassroomById() {
+    void shouldGetAllClassroom() {
         classrooms.add(classroom);
         classrooms.add(classroom2);
         when(classroomRepository.findAll()).thenReturn(classrooms);
-        List<Classroom> allClassrooms = classroomService.getAllClassroom();
 
+        List<Classroom> allClassrooms = classroomService.getAllClassroom();
         assertNotNull(allClassrooms);
         assertEquals(2, allClassrooms.size());
         verify(classroomRepository, times(1)).findAll();
+    }
+
+    @Test
+    void shouldGetAllClassroomByBuild() {
+        classroom.setBuild("A");
+        classroom2.setBuild("A");
+        classrooms.add(classroom);
+        classrooms.add(classroom2);
+        when(classroomRepository.findByBuild("A")).thenReturn(classrooms);
+
+        List<Classroom> allClassrooms = classroomService.getAllClassroomByBuild("A");
+        assertNotNull(allClassrooms);
+        assertEquals(2, allClassrooms.size());
+        verify(classroomRepository, times(1)).findByBuild("A");
     }
 
 }
