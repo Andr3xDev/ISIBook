@@ -18,8 +18,12 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public List<User> getAllUsers() {
-        return userService.findAllUser();
+    public ResponseEntity<?> getAllUsers() {
+        List<User> users = userService.findAllUser();
+        if (users == null) {
+            return ResponseEntity.badRequest().body("fail");
+        }
+        return ResponseEntity.ok(users);
     }
 
     @GetMapping("/{id}")
