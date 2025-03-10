@@ -1,8 +1,6 @@
 package edu.eci.cvds.reserves.service;
 
-import edu.eci.cvds.reserves.model.Admin;
 import edu.eci.cvds.reserves.model.Reserve;
-import edu.eci.cvds.reserves.model.User;
 import edu.eci.cvds.reserves.repository.ReserveRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -36,16 +34,17 @@ public class ReserveService {
         return reserveRepository.save(reserve);
     }
 
-    public void deleteReserve(String id/*,User user*/) {
-        //if (user instanceof Admin) {
-            reserveRepository.deleteById(id);
-        //}else {
-            //Optional<Reserve> reserve = getReserveById(id);
-            //if (reserve.isPresent()) {
-                //if (reserve.get().getUserId() == user.getU)
-            //}
-        //}
+    public void deleteReserve(String id/* ,User user */) {
+        // if (user instanceof Admin) {
+        reserveRepository.deleteById(id);
+        // }else {
+        // Optional<Reserve> reserve = getReserveById(id);
+        // if (reserve.isPresent()) {
+        // if (reserve.get().getUserId() == user.getU)
+        // }
+        // }
     }
+
     public Optional<Reserve> updateReserve(String id, Reserve updatedReserve) {
         return reserveRepository.findById(id).map(existingReserve -> {
             existingReserve.setUserId(updatedReserve.getUserId());

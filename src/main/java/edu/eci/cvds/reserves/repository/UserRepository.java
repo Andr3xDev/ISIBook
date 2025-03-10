@@ -13,12 +13,16 @@ import edu.eci.cvds.reserves.model.User;
 @Repository
 public interface UserRepository extends MongoRepository<User, String> {
 
-    Optional<User> findByUserName(String userName);
+    void deleteByUsername(String username);
+
+    boolean existsByUsername(String username);
+
+    Optional<User> findByUsername(String username);
 
     List<User> findAllByType(String type);
 
-    @Query("{ 'userName': ?0 }")
+    @Query("{ 'username': ?0 }")
     @Update("{ '$set': { 'status': ?1 } }")
-    User updateStatusByUserName(String userName, String status);
+    User updateStatusByUsername(String username, String status);
 
 }
