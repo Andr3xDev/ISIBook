@@ -18,18 +18,25 @@ public class ReserveController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Reserve>> getAllReserves() {
-        return ResponseEntity.ok(reserveService.getAllReserves());
+    public ResponseEntity<?> getAllReserves() {
+        List<Reserve> reserves = reserveService.getAllReserves();
+        if (reserves == null){
+            return ResponseEntity.badRequest().body("There are not reserves available");
+        }
+        return ResponseEntity.ok(reserves);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Reserve> getReserveById(@PathVariable String id) {
+    public ResponseEntity<?> getReserveById(String id) {
         Optional<Reserve> reserve = reserveService.getReserveById(id);
-        return reserve.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        if (reserve.isEmpty()){
+            return ResponseEntity.badRequest().body("There are not reserves with this id");
+        }
+        return ResponseEntity.ok(reserve);
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Reserve>> getReservesByUser(@PathVariable String userId) {
+    public ResponseEntity<List<Reserve>> getReservesByUser(String userId) {
         return ResponseEntity.ok(reserveService.getReservesByUser(userId));
     }
 
