@@ -14,12 +14,12 @@ public abstract class User {
 
     protected String name;
     protected String password;
-    protected String userName;
+    protected String username;
     protected LocalDateTime register;
 
-    protected User(String name, String userName, String password) {
+    protected User(String name, String username, String password) {
         this.name = name;
-        this.userName = userName;
+        this.username = username;
         this.password = password;
         this.register = LocalDateTime.now();
     }

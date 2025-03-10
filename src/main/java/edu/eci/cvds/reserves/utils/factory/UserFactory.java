@@ -19,12 +19,12 @@ public class UserFactory {
         return switch (type.toLowerCase()) {
             case "teacher" -> new Teacher(
                     getRequiredParam(params, "name"),
-                    getRequiredParam(params, "userName"),
+                    getRequiredParam(params, "username"),
                     getRequiredParam(params, "mail"),
                     getRequiredParam(params, "passwd"));
             case "admin" -> new Admin(
                     getRequiredParam(params, "name"),
-                    getRequiredParam(params, "userName"),
+                    getRequiredParam(params, "username"),
                     getRequiredParam(params, "passwd"));
             default -> throw new IllegalArgumentException("Type of user not exist: " + type);
         };

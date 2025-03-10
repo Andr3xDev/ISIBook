@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-public class ReserveServiceTest {
+class ReserveServiceTest {
 
     @Mock
     private ReserveRepository reserveRepository;
@@ -33,8 +33,10 @@ public class ReserveServiceTest {
 
     @BeforeEach
     void setUp() {
-        testReserve = new Reserve ("Pedro", "LabIco", LocalDateTime.now(), LocalDateTime.now().plusHours(2), "Pending", false, "Study", "None");
-        updatedReserve = new Reserve("Maria", "LabIco", LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(1).plusHours(2), "Confirmed", true, "Research", "Weekly");
+        testReserve = new Reserve("Pedro", "LabIco", LocalDateTime.now(), LocalDateTime.now().plusHours(2), "Pending",
+                false, "Study", "None");
+        updatedReserve = new Reserve("Maria", "LabIco", LocalDateTime.now().plusDays(1),
+                LocalDateTime.now().plusDays(1).plusHours(2), "Confirmed", true, "Research", "Weekly");
     }
 
     @Test
@@ -81,11 +83,11 @@ public class ReserveServiceTest {
         verify(reserveRepository, times(1)).deleteById("1");
     }
 
-//    @Test
-//    void testDeleteReserve_Failure() {
-//        reserveService.deleteReserve("2");
-//        verify(reserveRepository, never()).deleteById("2");
-//    }
+    // @Test
+    // void testDeleteReserve_Failure() {
+    // reserveService.deleteReserve("2");
+    // verify(reserveRepository, never()).deleteById("2");
+    // }
     @Test
     void testUpdateReserve_Success() {
         when(reserveRepository.findById("1")).thenReturn(Optional.of(testReserve));
@@ -116,6 +118,5 @@ public class ReserveServiceTest {
         verify(reserveRepository, times(1)).findById("2");
         verify(reserveRepository, never()).save(any(Reserve.class));
     }
-
 
 }
