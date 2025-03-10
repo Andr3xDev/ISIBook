@@ -19,7 +19,7 @@ public class ClassroomService {
     }
 
     public Classroom getClassroomById(String id) {
-        return classroomRepository.findById(id).orElseThrow(() -> new RuntimeException("Salón no encontrado"));
+        return classroomRepository.findById(id).orElseThrow(() -> new RuntimeException("Classroom not found"));
     }
 
     public List<Classroom> getAllClassroom() {

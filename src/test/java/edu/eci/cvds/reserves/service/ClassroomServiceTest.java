@@ -2,6 +2,8 @@ package edu.eci.cvds.reserves.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -61,6 +63,17 @@ class ClassroomServiceTest {
         assertNotNull(newClassroom);
         assertEquals("1", newClassroom.getId());
         verify(classroomRepository, times(1)).findById("1");
+    }
+
+    @Test
+    void shouldNotGetClassroomById() {
+        when(classroomRepository.findById("invalid-id")).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            classroomService.getClassroomById("invalid-id");
+        });
+
+        assertEquals("Classroom not found", exception.getMessage());
     }
 
     @Test
