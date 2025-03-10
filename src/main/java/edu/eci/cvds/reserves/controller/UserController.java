@@ -1,6 +1,7 @@
 package edu.eci.cvds.reserves.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import edu.eci.cvds.reserves.model.User;
@@ -36,9 +37,10 @@ public class UserController {
         return null;
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable String id) {
-
+    @DeleteMapping("/username/{username}")
+    public ResponseEntity<Void> deleteUserByUsername(@PathVariable String username) {
+        userService.deleteUserByUsername(username);
+        return ResponseEntity.noContent().build(); // TODO: Change message http
     }
 
 }
