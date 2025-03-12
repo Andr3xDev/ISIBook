@@ -284,6 +284,15 @@ class ReserveServiceTest {
 
         assertFalse(reserveService.isReserveDuplicate(testReserve));
     }
+    @Test
+    void testGetReservesByToday() {
+        LocalDateTime startOfDay = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
+        LocalDateTime endOfDay = startOfDay.plus(1, ChronoUnit.DAYS);
+        when(reserveRepository.findByStartDateBetween(startOfDay, endOfDay)).thenReturn(List.of(testReserve));
 
-
+        List<Reserve> reserves = reserveService.getReservesByToday();
+        assertFalse(reserves.isEmpty());
+        assertEquals(1, reserves.size());
+        assertEquals("Pedro", reserves.get(0).getUserId());
+    }
 }

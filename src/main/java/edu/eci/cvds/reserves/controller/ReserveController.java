@@ -2,6 +2,7 @@ package edu.eci.cvds.reserves.controller;
 
 import edu.eci.cvds.reserves.model.Reserve;
 import edu.eci.cvds.reserves.service.ReserveService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -90,5 +91,10 @@ public class ReserveController {
             return ResponseEntity.badRequest().body("There are no reserves for this hour");
         }
         return ResponseEntity.ok(reserves);
+    }
+    @GetMapping("/reserves/today")
+    public ResponseEntity<List<Reserve>> getReservesByToday() {
+        List<Reserve> reserves = reserveService.getReservesByToday();
+        return new ResponseEntity<>(reserves, HttpStatus.OK);
     }
 }

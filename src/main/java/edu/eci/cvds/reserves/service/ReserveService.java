@@ -94,5 +94,10 @@ public class ReserveService {
         LocalDateTime endOfHour = startOfHour.plus(1, ChronoUnit.HOURS);
         return reserveRepository.findByStartDateBetween(startOfHour, endOfHour);
     }
+    public List<Reserve> getReservesByToday() {
+        LocalDateTime startOfDay = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
+        LocalDateTime endOfDay = startOfDay.plus(1, ChronoUnit.DAYS);
+        return reserveRepository.findByStartDateBetween(startOfDay, endOfDay);
+    }
 
 }
