@@ -84,7 +84,8 @@ public class ReserveService {
      * @return true if a duplicate reserve exists, false otherwise
      */
     public boolean isReserveDuplicate(Reserve reserve) {
-        List<Reserve> existingReserves = reserveRepository.findByClassroomIdAndStartDate(reserve.getClassroomId(), reserve.getStartDate());
+        List<Reserve> existingReserves = reserveRepository.findByClassroomIdAndStartDate(reserve.getClassroomId(),
+                reserve.getStartDate());
 
         return existingReserves.stream().anyMatch(existingReserve -> {
             LocalDateTime newStart = reserve.getStartDate();
@@ -96,9 +97,8 @@ public class ReserveService {
             boolean endsInside = newEnd.isAfter(existingStart) && newEnd.isBefore(existingEnd);
             boolean fullyInside = newStart.isBefore(existingStart) && newEnd.isAfter(existingEnd);
             boolean exactMatch = newStart.isEqual(existingStart) && newEnd.isEqual(existingEnd);
-            boolean overlaps = startsInside || endsInside || fullyInside || exactMatch;
 
-            return overlaps;
+            return startsInside || endsInside || fullyInside || exactMatch;
         });
     }
 
@@ -114,9 +114,10 @@ public class ReserveService {
     /**
      * Update a reserve by its ID.
      *
-     * @param id the ID of the reserve to update
+     * @param id             the ID of the reserve to update
      * @param updatedReserve the updated reserve data
-     * @return an Optional containing the updated reserve if found, or empty if not found
+     * @return an Optional containing the updated reserve if found, or empty if not
+     *         found
      */
     public Optional<Reserve> updateReserve(String id, Reserve updatedReserve) {
         return reserveRepository.findById(id).map(existingReserve -> {
