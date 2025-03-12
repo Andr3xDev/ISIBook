@@ -24,7 +24,7 @@
         <sonar.organization>dev-builders</sonar.organization>
         <sonar.projectKey>daviespr1406_Reservas_Sys</sonar.projectKey>
         <sonar.projectName>Reservas_Sys</sonar.projectName>  
-        <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
         <sonar.coverage.exclusions>**/model/*,**/controller/*,**/utils/*,**/config/*,**/ReservesApplication.java</sonar.coverage.exclusions>
         <sonar.coverage.jacoco.xmlReportPaths>../app-it/target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
