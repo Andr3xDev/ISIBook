@@ -12,7 +12,6 @@ import java.util.List;
 /**
  * REST controller for managing reserves.
  */
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/reserves")
 public class ReserveController {
