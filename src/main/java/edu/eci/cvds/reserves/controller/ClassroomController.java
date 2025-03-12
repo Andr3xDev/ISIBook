@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import edu.eci.cvds.reserves.model.Classroom;
 import edu.eci.cvds.reserves.service.ClassroomService;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/classrooms")
 public class ClassroomController {
