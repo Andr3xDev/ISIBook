@@ -5,6 +5,8 @@ import edu.eci.cvds.reserves.repository.ReserveRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Service
 public class ReserveService {
@@ -58,6 +60,15 @@ public class ReserveService {
 
             return reserveRepository.save(existingReserve);
         });
+    }
+    public List<Reserve> getReservesByWeek(LocalDateTime startOfWeek) {
+        LocalDateTime endOfWeek = startOfWeek.plus(1, ChronoUnit.WEEKS);
+        return reserveRepository.findByStartDateBetween(startOfWeek, endOfWeek);
+    }
+
+    public List<Reserve> getReservesByHour(LocalDateTime startOfHour) {
+        LocalDateTime endOfHour = startOfHour.plus(1, ChronoUnit.HOURS);
+        return reserveRepository.findByStartDateBetween(startOfHour, endOfHour);
     }
 
 }
