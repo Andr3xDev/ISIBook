@@ -122,16 +122,6 @@ class UserServiceTest {
         assertEquals(users.size(), usersFind.size());
     }
 
-    // @Test
-    void shouldFindUserByID() {
-        // when(userRepository.findById("1").thenReturn(Optional.of(admin));
-
-        Optional<User> targetUser = userRepository.findById("1");
-
-        System.out.println(targetUser);
-        assertNotNull(targetUser.get());
-    }
-
     @Test
     void shouldFindUserByusername() {
         when(userRepository.save(teacher)).thenReturn(teacher);
