@@ -55,8 +55,8 @@ public class ReserveController {
     }
 
     @PostMapping
-    public Reserve createReserve(@RequestBody Reserve reserve) {
-        return reserveService.createReserve(reserve);
+    public ResponseEntity<Reserve> createReserve(@RequestBody Reserve reserve) {
+        return ResponseEntity.ok(reserveService.createReserve(reserve));
     }
 
     @DeleteMapping("/{id}")
