@@ -216,43 +216,243 @@ To make the application easier to understand, in this section we will summarize 
 
 </br>
 
-### Users
+---
 
+### Classrooms
 
-#### `GET /users`
-- **Description**: Retrieve all registered users.
-- **Query Parameters**:
-  - `name` _(optional)_: Filter by user name.  
-  - `role` _(optional)_: Filter by user role (`ADMIN`, `USER`, etc.).  
-- **Successful Response**:
+</br>
+
+  #### `POST /api/classrooms`
+- **Description**: Create a new classroom.
+- **Request Body**:
   ```json
-  [
+  {
+    "id": "101",
+    "name": "Computer Lab 1",
+    "building": "Main Building",
+    "capacity": 30,
+    "features": ["Projector", "Air Conditioning"],
+  }
+  ```
+- **Successful Response**:
+    ```json
     {
-      "id": 1,
-      "name": "John Doe",
-      "email": "john@example.com",
-      "role": "USER"
-    },
-    {
-      "id": 2,
-      "name": "Jane Smith",
-      "email": "jane@example.com",
-      "role": "ADMIN"
+      "id": "101",
+      "name": "Computer Lab 1",
+      "building": "Main Building",
+      "capacity": 30,
+      "features": ["Projector", "Air Conditioning"],
     }
-  ]
     ```
-- **Error Response**:
-        400 Bad Request: Invalid parameters.
-        500 Internal Server Error: Server error.
+- **Error Responses**:
+    - 400 Bad Request: Invalid request body.
 
+</br>
 
+#### `GET /api/classrooms`  
+- **Description**: Retrieve all classrooms.  
+- **Successful Response**:  
+    ```json  
+      {  
+        "id": "101",  
+        "name": "Computer Lab 1",  
+        "building": "Main Building",  
+        "capacity": 30,  
+        "features": ["Projector", "Air Conditioning"],  
+        "schedules": {  
+            "Monday": ["08:00-10:00", "14:00-16:00"],  
+            "Wednesday": ["10:00-12:00"]  
+        }  
+      },  
+      {  
+        "id": "102",  
+        "name": "Lecture Hall 2",  
+        "building": "Science Building",  
+        "capacity": 50,  
+        "features": ["Whiteboard", "Microphone"],  
+      }  
+    ```
+- **Error Responses**:
+    - 204 No Content: No classrooms available.
+
+</br>
+
+#### `GET /api/classrooms/building`  
+- **Description**: Retrieve all classrooms in a specific building.  
+- **Query Parameters**:  
+    - `build` _(required)_: Building name to filter classrooms.  
+- **Successful Response**:  
+    ```json  
+      {  
+          "id": "101",  
+          "name": "Computer Lab 1",  
+          "building": "Main Building",  
+          "capacity": 30,  
+          "features": ["Projector", "Air Conditioning"],  
+        }  
+    ```
+- **Error Responses**:
+    - 400 Bad Request: Missing or invalid query parameter.
 
 
   
 </br>
 
-### Classrooms
+---
 
+### Users
+
+</br>
+
+
+#### `GET /api/users`  
+- **Description**: Retrieve all registered users.  
+- **Successful Response**:  
+    ```json  
+    {  
+        "_id": {  
+            "$oid": "67d16201b3b48052db4b2add"  
+        },  
+        "name": "Andres Felipe Chavarro",  
+        "password": "Ac9.",  
+        "username": "andres.chavarro-p",  
+        "register": {  
+            "$date": { "$numberLong": "1741737600000" }  
+        },  
+        "mail": "andres.chavarro-p@escuelaing.edu.co",  
+        "status": "active",  
+        "type": "teacher"  
+    },  
+    {  
+        "_id": {  
+            "$oid": "67d160d8b3b48052db4b2adc"  
+        },  
+        "name": "Aurora",  
+        "password": "aA0.",  
+        "username": "auroraAdmin",  
+        "register": {  
+            "$date": { "$numberLong": "1741737600000" }  
+        },  
+        "type": "admin"  
+    }  
+    ```
+- **Error Responses**:
+    - 204 No Content: No users available.
+ 
+</br>
+
+#### `GET /api/users/{id}`  
+- **Description**: Retrieve a user by ID.  
+- **Path Parameters**:  
+    - `id` _(required)_: ID of the user to retrieve.  
+- **Successful Response**:  
+    ```json  
+    {  
+        "_id": {  
+            "$oid": "67d16201b3b48052db4b2add"  
+        },  
+        "name": "Andres Felipe Chavarro",  
+        "password": "Ac9.",  
+        "username": "andres.chavarro-p",  
+        "register": {  
+            "$date": { "$numberLong": "1741737600000" }  
+        },  
+        "mail": "andres.chavarro-p@escuelaing.edu.co",  
+        "status": "active",  
+        "type": "teacher"  
+    }  
+    ```
+- **Error Responses**:
+    - 404 Not Found: User not found with the specified ID.
+ 
+</br>
+
+#### `POST /api/users`  
+- **Description**: Create a new user.  
+- **Request Body**:  
+    ```json  
+    {  
+        "name": "Andres Felipe Chavarro",  
+        "password": "Ac9.",  
+        "username": "andres.chavarro-p",  
+        "register": {  
+            "$date": { "$numberLong": "1741737600000" }  
+        },  
+        "mail": "andres.chavarro-p@escuelaing.edu.co",  
+        "status": "active",  
+        "type": "teacher"  
+    }  
+    ```
+- **Successful Response**:
+    ```
+    {  
+        "_id": {  
+            "$oid": "67d16201b3b48052db4b2add"  
+        },  
+        "name": "Andres Felipe Chavarro",  
+        "password": "Ac9.",  
+        "username": "andres.chavarro-p",  
+        "register": {  
+            "$date": { "$numberLong": "1741737600000" }  
+        },  
+        "mail": "andres.chavarro-p@escuelaing.edu.co",  
+        "status": "active",  
+        "type": "teacher"  
+    }  
+    ```
+- **Error Responses**:
+    - 400 Bad Request: Invalid request body.
+
+</br>
+
+#### `PUT /api/users/{id}`  
+- **Description**: Update an existing user by ID.  
+- **Path Parameters**:  
+    - `id` _(required)_: ID of the user to update.  
+- **Request Body**:  
+    ```json  
+    {  
+        "name": "Andres Felipe Chavarro",  
+        "password": "Ac9.",  
+        "username": "andres.chavarro-p",  
+        "register": {  
+            "$date": { "$numberLong": "1741737600000" }  
+        },  
+        "mail": "andres.chavarro-p@escuelaing.edu.co",  
+        "status": "active",  
+        "type": "teacher"  
+    }  
+    ```
+- **Successful Response**:
+    ```json
+    {  
+        "_id": {  
+            "$oid": "67d16201b3b48052db4b2add"  
+        },  
+        "name": "Andres Felipe Chavarro",  
+        "password": "Ac9.",  
+        "username": "andres.chavarro-p",  
+        "register": {  
+            "$date": { "$numberLong": "1741737600000" }  
+        },  
+        "mail": "andres.chavarro-p@escuelaing.edu.co",  
+        "status": "active",  
+        "type": "teacher"  
+    }  
+    ```
+- **Error Responses**:
+    - 400 Bad Request: Invalid request body or ID format.
+
+</br>
+
+#### `DELETE /api/users/username/{username}`  
+- **Description**: Delete a user by username.  
+- **Path Parameters**:  
+    - `username` _(required)_: Username of the user to delete.  
+- **Successful Response**:  
+    - 204 No Content: User deleted successfully.  
+- **Error Responses**:  
+    - 404 Not Found: User not found with the specified username.
 
 </br>
 </br>
