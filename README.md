@@ -212,7 +212,274 @@ This is the model designed and used for reference of the database built in Mongo
 To make the application easier to understand, in this section we will summarize all the possible endpoints for use in any frontend.
 
 ### Reserves
-...
+
+</br>
+
+#### `GET /api/reserves`
+- **Description**: Retrieve all reserves.
+- **Successful Response**:
+    ```json
+    [
+        {
+            "id": "1",
+            "userId": "67d16201b3b48052db4b2add",
+            "classroomId": "101",
+            "date": "2025-03-12",
+            "timeSlot": "08:00-10:00",
+            "status": "confirmed"
+        },
+        {
+            "id": "2",
+            "userId": "67d160d8b3b48052db4b2adc",
+            "classroomId": "102",
+            "date": "2025-03-13",
+            "timeSlot": "10:00-12:00",
+            "status": "pending"
+        }
+    ]
+    ```
+- **Error Responses**:
+    - 204 No Content: No reserves available.
+
+</br>
+
+#### `GET /api/reserves/{id}`
+- **Description**: Retrieve a reserve by ID
+- **Path Parameters**:
+    - `id` _(required)_: ID of the reserve to retrieve.
+- **Successful Response**:
+    ```json
+    {
+        "id": "1",
+        "userId": "67d16201b3b48052db4b2add",
+        "classroomId": "101",
+        "date": "2025-03-12",
+        "timeSlot": "08:00-10:00",
+        "status": "confirmed"
+    }
+    ```
+- **Error Responses**:
+    - 404 Not Found: Reserve not found with the specified ID.
+
+</br>
+
+#### `GET /api/reserves/user/{userId}`
+- **Description**: Retrieve all reserves made by a specific user.
+- **Path Parameters**:
+    - `userId` _(required)_: ID of the user whose reserves are to be retrieved.
+- **Successful Response**:
+    ```json
+    [
+        {
+            "id": "1",
+            "userId": "67d16201b3b48052db4b2add",
+            "classroomId": "101",
+            "date": "2025-03-12",
+            "timeSlot": "08:00-10:00",
+            "status": "confirmed"
+        },
+        {
+            "id": "3",
+            "userId": "67d16201b3b48052db4b2add",
+            "classroomId": "103",
+            "date": "2025-03-14",
+            "timeSlot": "14:00-16:00",
+            "status": "pending"
+        }
+    ]
+    ```
+- **Error Responses**:
+    - 204 No Content: No reserves found for the specified user.
+
+</br>
+
+#### `GET /api/reserves/classroom/{classroomId}`
+- **Description**: Retrieve all reservations for a specific classroom.
+- **Path Parameters**:
+    - `classroomId` _(required)_: ID of the classroom whose reservations are to be retrieved.
+- **Successful Response**:
+    ```json
+    [
+        {
+            "id": "1",
+            "userId": "67d16201b3b48052db4b2add",
+            "classroomId": "101",
+            "date": "2025-03-12",
+            "timeSlot": "08:00-10:00",
+            "status": "confirmed"
+        },
+        {
+            "id": "2",
+            "userId": "67d160d8b3b48052db4b2adc",
+            "classroomId": "101",
+            "date": "2025-03-13",
+            "timeSlot": "10:00-12:00",
+            "status": "pending"
+        }
+    ]
+    ```
+- **Error Responses**:
+    - 204 No Content: No reservations found for the specified classroom.
+
+</br>
+
+#### `POST /api/reserves`
+- **Description**: Create a new reservation.
+- **Request Body**:
+    ```json
+    {
+        "userId": "67d16201b3b48052db4b2add",
+        "classroomId": "101",
+        "date": "2025-03-12",
+        "timeSlot": "08:00-10:00"
+    }
+    ```
+- **Successful Response**:
+    ```json
+    {
+        "id": "1",
+        "userId": "67d16201b3b48052db4b2add",
+        "classroomId": "101",
+        "date": "2025-03-12",
+        "timeSlot": "08:00-10:00",
+        "status": "confirmed"
+    }
+    ```
+- **Error Responses**:
+    - 400 Bad Request: Invalid reservation details.
+
+</br>
+
+#### `DELETE /api/reserves/{id}`
+- **Description**: Delete a reservation by its ID.
+- **Path Parameters**:
+    - `id` _(required)_: ID of the reservation to be deleted.
+- **Successful Response**:
+    - 204 No Content: Reservation successfully deleted.
+- **Error Responses**:
+    - 404 Not Found: Reservation not found with the specified ID.
+
+</br>
+
+#### `PUT /api/reserves/{id}`
+- **Description**: Update an existing reservation by its ID.
+- **Path Parameters**:
+    - `id` _(required)_: ID of the reservation to update.
+- **Request Body**:
+    ```json
+    {
+        "userId": "67d16201b3b48052db4b2add",
+        "classroomId": "101",
+        "date": "2025-03-12",
+        "timeSlot": "08:00-10:00",
+        "status": "confirmed"
+    }
+    ```
+- **Successful Response**:
+    ```json
+    {
+        "id": "1",
+        "userId": "67d16201b3b48052db4b2add",
+        "classroomId": "101",
+        "date": "2025-03-12",
+        "timeSlot": "08:00-10:00",
+        "status": "confirmed"
+    }
+    ```
+- **Error Responses**:
+    - 404 Not Found: Reservation not found with the specified ID.
+
+</br>
+
+#### `GET /api/reserves/week`
+- **Description**: Retrieve all reservations for a specific week.
+- **Query Parameters**:
+    - `startOfWeek` _(required)_: Start date of the week in ISO 8601 format (e.g., `2025-03-10T00:00:00`).
+- **Successful Response**:
+    ```json
+    [
+        {
+            "id": "1",
+            "userId": "67d16201b3b48052db4b2add",
+            "classroomId": "101",
+            "date": "2025-03-12",
+            "timeSlot": "08:00-10:00",
+            "status": "confirmed"
+        },
+        {
+            "id": "2",
+            "userId": "67d160d8b3b48052db4b2adc",
+            "classroomId": "102",
+            "date": "2025-03-13",
+            "timeSlot": "10:00-12:00",
+            "status": "pending"
+        }
+    ]
+    ```
+- **Error Responses**:
+    - 204 No Content: No reservations found for the specified week.
+    - 400 Bad Request: Invalid date format for `startOfWeek`. Ensure it follows the ISO 8601 format (e.g., `2025-03-10T00:00:00`).
+
+</br>
+
+#### `GET /api/reserves/hour`
+- **Description**: Retrieve all reservations for a specific hour.
+- **Query Parameters**:
+    - `startOfHour` _(required)_: Start of the hour in ISO 8601 format (e.g., `2025-03-12T08:00:00`).
+- **Successful Response**:
+    ```json
+    [
+        {
+            "id": "1",
+            "userId": "67d16201b3b48052db4b2add",
+            "classroomId": "101",
+            "date": "2025-03-12",
+            "timeSlot": "08:00-09:00",
+            "status": "confirmed"
+        },
+        {
+            "id": "2",
+            "userId": "67d160d8b3b48052db4b2adc",
+            "classroomId": "102",
+            "date": "2025-03-12",
+            "timeSlot": "08:00-09:00",
+            "status": "pending"
+        }
+    ]
+    ```
+- **Error Responses**:
+    - 204 No Content: No reservations found for the specified hour.
+    - 400 Bad Request: Invalid date-time format for `startOfHour`. Ensure it follows the ISO 8601 format (e.g., `2025-03-12T08:00:00`).
+
+</br>
+
+#### `GET /api/reserves/today`
+- **Description**: Retrieve all reservations for the current day.
+- **Successful Response**:
+    ```json
+    [
+        {
+            "id": "1",
+            "userId": "67d16201b3b48052db4b2add",
+            "classroomId": "101",
+            "date": "2025-03-12",
+            "timeSlot": "08:00-10:00",
+            "status": "confirmed"
+        },
+        {
+            "id": "2",
+            "userId": "67d160d8b3b48052db4b2adc",
+            "classroomId": "102",
+            "date": "2025-03-12",
+            "timeSlot": "10:00-12:00",
+            "status": "pending"
+        }
+    ]
+    ```
+- **Error Responses**:
+    - 204 No Content: No reservations found for today.
+    - 500 Internal Server Error: Failed to retrieve reservations.
+
 
 </br>
 
@@ -384,7 +651,7 @@ To make the application easier to understand, in this section we will summarize 
     }  
     ```
 - **Successful Response**:
-    ```
+    ```json
     {  
         "_id": {  
             "$oid": "67d16201b3b48052db4b2add"  
