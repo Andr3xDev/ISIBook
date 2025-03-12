@@ -1,5 +1,6 @@
 package edu.eci.cvds.reserves.service;
 
+import edu.eci.cvds.reserves.controller.ReserveController;
 import edu.eci.cvds.reserves.model.Reserve;
 import edu.eci.cvds.reserves.repository.ReserveRepository;
 import edu.eci.cvds.reserves.service.ReserveService;
@@ -10,10 +11,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
+
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,9 +32,14 @@ class ReserveServiceTest {
     @InjectMocks
     private ReserveService reserveService;
 
+    private ReserveController reserveController;
+
     private Reserve testReserve;
 
     private Reserve updatedReserve;
+    private Reserve overlappingReserve;
+    private Reserve sameTimeReserve;
+    private Reserve differentTimeReserve;
 
     @BeforeEach
     void setUp() {
@@ -37,6 +47,11 @@ class ReserveServiceTest {
                 false, "Study", "None");
         updatedReserve = new Reserve("Maria", "LabIco", LocalDateTime.now().plusDays(1),
                 LocalDateTime.now().plusDays(1).plusHours(2), "Confirmed", true, "Research", "Weekly");
+        reserveController = new ReserveController(reserveService);
+        overlappingReserve = new Reserve("Maria", "LabIco", LocalDateTime.now().plusMinutes(30), LocalDateTime.now().plusHours(2).plusMinutes(30), "Confirmed", true, "Research", "Weekly");
+        sameTimeReserve = new Reserve("Juan", "LabIco", LocalDateTime.now(), LocalDateTime.now().plusHours(2), "Pending", false, "Study", "None");
+        differentTimeReserve = new Reserve("Ana", "LabIco", LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(1).plusHours(2), "Pending", false, "Study", "None");
+
     }
 
     @Test
@@ -118,5 +133,157 @@ class ReserveServiceTest {
         verify(reserveRepository, times(1)).findById("2");
         verify(reserveRepository, never()).save(any(Reserve.class));
     }
+    @Test
+    void testGetReservesByWeek() {
+        LocalDateTime startOfWeek = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
+        LocalDateTime endOfWeek = startOfWeek.plus(1, ChronoUnit.WEEKS);
+        when(reserveRepository.findByStartDateBetween(startOfWeek, endOfWeek)).thenReturn(List.of(testReserve));
+
+        List<Reserve> reserves = reserveService.getReservesByWeek(startOfWeek);
+        assertFalse(reserves.isEmpty());
+        assertEquals(1, reserves.size());
+        assertEquals("Pedro", reserves.get(0).getUserId());
+    }
+
+    @Test
+    void testGetReservesByHour() {
+        LocalDateTime startOfHour = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
+        LocalDateTime endOfHour = startOfHour.plus(1, ChronoUnit.HOURS);
+        when(reserveRepository.findByStartDateBetween(startOfHour, endOfHour)).thenReturn(List.of(testReserve));
+
+        List<Reserve> reserves = reserveService.getReservesByHour(startOfHour);
+        assertFalse(reserves.isEmpty());
+        assertEquals(1, reserves.size());
+        assertEquals("Pedro", reserves.get(0).getUserId());
+    }
+    @Test
+    public void testGetAllReserves() {
+        when(reserveService.getAllReserves()).thenReturn(List.of(testReserve));
+        ResponseEntity<?> response = reserveController.getAllReserves();
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertInstanceOf(List.class, response.getBody());
+    }
+    @Test
+    void testIsReserveDuplicate_SameTime() {
+        when(reserveRepository.findByClassroomIdAndStartDate(testReserve.getClassroomId(), testReserve.getStartDate())).thenReturn(List.of(sameTimeReserve));
+        assertTrue(reserveService.isReserveDuplicate(testReserve));
+    }
+
+    @Test
+    void testIsReserveDuplicate_OverlappingTime() {
+        when(reserveRepository.findByClassroomIdAndStartDate(testReserve.getClassroomId(), testReserve.getStartDate())).thenReturn(List.of(overlappingReserve));
+        assertTrue(reserveService.isReserveDuplicate(testReserve));
+    }
+
+    @Test
+    void testIsReserveDuplicate_DifferentTime() {
+        when(reserveRepository.findByClassroomIdAndStartDate(testReserve.getClassroomId(), testReserve.getStartDate())).thenReturn(List.of(differentTimeReserve));
+        assertFalse(reserveService.isReserveDuplicate(testReserve));
+    }
+
+    @Test
+    void testIsReserveDuplicate_NoExistingReserves() {
+        when(reserveRepository.findByClassroomIdAndStartDate(testReserve.getClassroomId(), testReserve.getStartDate())).thenReturn(List.of());
+        assertFalse(reserveService.isReserveDuplicate(testReserve));
+    }
+    @Test
+    void testCreateReserve_DuplicateExists() {
+        Reserve duplicateReserve = new Reserve("Maria", "LabIco", LocalDateTime.now(), LocalDateTime.now().plusHours(2), "Confirmed", true, "Research", "Weekly");
+        when(reserveRepository.findByClassroomIdAndStartDate(testReserve.getClassroomId(), testReserve.getStartDate())).thenReturn(List.of(duplicateReserve));
+
+        assertThrows(IllegalArgumentException.class, () -> reserveService.createReserve(testReserve), "A reserve already exists for the same day and time.");
+    }
+    @Test
+    void testIsReserveDuplicate_StartsBeforeAndEndsAfterExisting() {
+        Reserve conflictingReserve = new Reserve("Maria", "LabIco",
+                testReserve.getStartDate().plusMinutes(10),
+                testReserve.getFinishDate().minusMinutes(10),
+                "Confirmed", true, "Research", "Weekly");
+
+        when(reserveRepository.findByClassroomIdAndStartDate(testReserve.getClassroomId(), testReserve.getStartDate()))
+                .thenReturn(List.of(conflictingReserve));
+
+        assertTrue(reserveService.isReserveDuplicate(testReserve));
+    }
+
+
+    @Test
+    void testIsReserveDuplicate_EndsExactlyWhenExistingStarts() {
+        Reserve conflictingReserve = new Reserve("Maria", "LabIco",
+                testReserve.getFinishDate(),
+                testReserve.getFinishDate().plusHours(1),
+                "Confirmed", true, "Research", "Weekly");
+
+        when(reserveRepository.findByClassroomIdAndStartDate(testReserve.getClassroomId(), testReserve.getStartDate()))
+                .thenReturn(List.of(conflictingReserve));
+
+        assertFalse(reserveService.isReserveDuplicate(testReserve));
+    }
+
+    @Test
+    void testIsReserveDuplicate_SameStartAndFinishTime() {
+        Reserve conflictingReserve = new Reserve("Maria", "LabIco",
+                testReserve.getStartDate(),
+                testReserve.getFinishDate(),
+                "Confirmed", true, "Research", "Weekly");
+
+        when(reserveRepository.findByClassroomIdAndStartDate(testReserve.getClassroomId(), testReserve.getStartDate()))
+                .thenReturn(List.of(conflictingReserve));
+
+        assertTrue(reserveService.isReserveDuplicate(testReserve));
+    }
+
+    @Test
+    void testIsReserveDuplicate_ContainedWithinExisting() {
+        Reserve existingReserve = new Reserve("Maria", "LabIco",
+                testReserve.getStartDate().minusMinutes(30),
+                testReserve.getFinishDate().plusMinutes(30),
+                "Confirmed", true, "Research", "Weekly");
+
+        when(reserveRepository.findByClassroomIdAndStartDate(testReserve.getClassroomId(), testReserve.getStartDate()))
+                .thenReturn(List.of(existingReserve));
+
+        assertTrue(reserveService.isReserveDuplicate(testReserve));
+    }
+
+    @Test
+    void testIsReserveDuplicate_StartsAfterExistingButSameFinishTime() {
+        Reserve existingReserve = new Reserve("Maria", "LabIco",
+                testReserve.getStartDate().minusHours(1),
+                testReserve.getFinishDate(),
+                "Confirmed", true, "Research", "Weekly");
+
+        when(reserveRepository.findByClassroomIdAndStartDate(testReserve.getClassroomId(), testReserve.getStartDate()))
+                .thenReturn(List.of(existingReserve));
+
+        assertTrue(reserveService.isReserveDuplicate(testReserve));
+    }
+
+    @Test
+    void testIsReserveDuplicate_StartsAfterAndEndsAfterExisting() {
+        Reserve existingReserve = new Reserve("Maria", "LabIco",
+                testReserve.getStartDate().minusHours(1),
+                testReserve.getFinishDate().minusMinutes(10),
+                "Confirmed", true, "Research", "Weekly");
+
+        when(reserveRepository.findByClassroomIdAndStartDate(testReserve.getClassroomId(), testReserve.getStartDate()))
+                .thenReturn(List.of(existingReserve));
+
+        assertTrue(reserveService.isReserveDuplicate(testReserve));
+    }
+
+    @Test
+    void testIsReserveDuplicate_NoOverlap() {
+        Reserve existingReserve = new Reserve("Maria", "LabIco",
+                testReserve.getFinishDate().plusHours(1),
+                testReserve.getFinishDate().plusHours(2),
+                "Confirmed", true, "Research", "Weekly");
+
+        when(reserveRepository.findByClassroomIdAndStartDate(testReserve.getClassroomId(), testReserve.getStartDate()))
+                .thenReturn(List.of(existingReserve));
+
+        assertFalse(reserveService.isReserveDuplicate(testReserve));
+    }
+
 
 }
