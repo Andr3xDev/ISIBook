@@ -12,7 +12,6 @@ import java.util.List;
 /**
  * REST controller for managing users.
  */
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
