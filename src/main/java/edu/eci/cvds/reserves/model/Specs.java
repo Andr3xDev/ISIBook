@@ -1,17 +1,14 @@
 package edu.eci.cvds.reserves.model;
 
-import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.Data;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
-@Document(collection = "specs")
+@Data
 public class Specs {
-
     private String capacity;
+    private String type;
     private String numComputers;
-    private String PCTypes;
-
+    private String pcTypes;
+    private Boolean projector;
+    private Boolean touchScreen;
+    private String airConditioning;
 }
