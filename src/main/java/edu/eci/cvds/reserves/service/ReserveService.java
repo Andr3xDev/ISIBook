@@ -33,8 +33,32 @@ public class ReserveService {
     }
 
     public Reserve createReserve(Reserve reserve) {
+        if (isReserveDuplicate(reserve)) {
+            throw new IllegalArgumentException("A reserve already exists for the same day and time.");
+        }
         return reserveRepository.save(reserve);
     }
+
+    public boolean isReserveDuplicate(Reserve reserve) {
+        List<Reserve> existingReserves = reserveRepository.findByClassroomIdAndStartDate(reserve.getClassroomId(), reserve.getStartDate());
+
+        return existingReserves.stream().anyMatch(existingReserve -> {
+            LocalDateTime newStart = reserve.getStartDate();
+            LocalDateTime newEnd = reserve.getFinishDate();
+            LocalDateTime existingStart = existingReserve.getStartDate();
+            LocalDateTime existingEnd = existingReserve.getFinishDate();
+
+            // Condiciones para detectar solapamiento:
+            boolean startsInside = newStart.isAfter(existingStart) && newStart.isBefore(existingEnd);
+            boolean endsInside = newEnd.isAfter(existingStart) && newEnd.isBefore(existingEnd);
+            boolean fullyInside = newStart.isBefore(existingStart) && newEnd.isAfter(existingEnd);
+            boolean exactMatch = newStart.isEqual(existingStart) && newEnd.isEqual(existingEnd);
+            boolean overlaps = startsInside || endsInside || fullyInside || exactMatch;
+
+            return overlaps;
+        });
+    }
+
 
     public void deleteReserve(String id/* ,User user */) {
         // if (user instanceof Admin) {

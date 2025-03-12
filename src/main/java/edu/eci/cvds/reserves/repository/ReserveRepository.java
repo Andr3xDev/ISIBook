@@ -10,4 +10,6 @@ public interface ReserveRepository extends MongoRepository<Reserve, String> {
     List<Reserve> findByUserId(String userId);
     List<Reserve> findByClassroomId(String classroomId);
     List<Reserve> findByStartDateBetween(LocalDateTime start, LocalDateTime end);
+
+    List<Reserve> findByClassroomIdAndStartDate(String classroomId, LocalDateTime startDate);
 }
