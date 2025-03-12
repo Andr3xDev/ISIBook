@@ -8,8 +8,10 @@ import edu.eci.cvds.reserves.model.User;
 import edu.eci.cvds.reserves.service.UserService;
 
 import java.util.List;
-import java.util.Optional;
 
+/**
+ * REST controller for managing users.
+ */
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -17,34 +19,69 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    /**
+     * Get all users.
+     *
+     * @return a ResponseEntity containing the list of all users or an error message
+     */
     @GetMapping
-    public ResponseEntity<?> getAllUsers() {
+    public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.findAllUser();
-        if (users == null) {
-            return ResponseEntity.badRequest().body("fail");
+        if (users == null || users.isEmpty()) {
+            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(users);
     }
 
+    /**
+     * Get a user by ID.
+     *
+     * @param id the ID of the user
+     * @return a ResponseEntity containing the user or a not found status
+     */
     @GetMapping("/{id}")
-    public Optional<User> getUserById(@PathVariable String id) {
-        return userService.findUserById(id);
+    public ResponseEntity<User> getUserById(@PathVariable String id) {
+        return userService.findUserById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
+    /**
+     * Create a new user.
+     *
+     * @param user the user to create
+     * @return a ResponseEntity containing the created user
+     */
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        User createdUser = userService.createUser(user);
+        return ResponseEntity.ok(createdUser);
     }
 
+    /**
+     * Update a user by ID.
+     *
+     * @param id   the ID of the user to update
+     * @param user the updated user data
+     * @return a ResponseEntity containing the updated user or a not found status
+     */
     @PutMapping("/{id}")
     public User updateUser(@PathVariable String id, @RequestBody User user) {
         return null;
     }
 
+    /**
+     * Delete a user by username.
+     *
+     * @param username the username of the user to delete
+     * @return a ResponseEntity indicating the result of the operation
+     */
     @DeleteMapping("/username/{username}")
     public ResponseEntity<Void> deleteUserByUsername(@PathVariable String username) {
+        if (userService.findUserByUsername(username) == null) {
+            return ResponseEntity.notFound().build();
+        }
         userService.deleteUserByUsername(username);
-        return ResponseEntity.noContent().build(); // TODO: Change message http
+        return ResponseEntity.noContent().build();
     }
-
 }
