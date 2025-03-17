@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy JAR app to Azure Web App - ISIBook
+name: Build and deploy JAR app to Azure Web App - isibook
 
 on:
   push:
@@ -52,15 +52,15 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_76A68F1718C146A1A0EAA48BAF01F1B8 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_3B2593D9E9364CBB9699CBA75EE4AC77 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_ACFCA74CD8C84655BBDC0853F00D449A }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_5EF9DE856F45469688BFFCA118A61EF9 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_D085FC93B0034540998EC3B2685686B5 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_4C2F447EE1AF4803A205F6E963C295E6 }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'ISIBook'
+          app-name: 'isibook'
           slot-name: 'Production'
           package: '*.jar'
           
