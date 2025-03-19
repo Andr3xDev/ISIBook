@@ -13,7 +13,6 @@ public class Admin extends User {
 
     @Id
     private String id;
-    private String type;
 
     public Admin(String name, String userName, String passwd) {
         super(name, userName, passwd);
