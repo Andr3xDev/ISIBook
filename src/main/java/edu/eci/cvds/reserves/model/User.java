@@ -10,22 +10,22 @@ import lombok.Setter;
 @Getter
 @Setter
 @Document(collection = "users")
-public abstract class User {
+public class User {
 
     protected String name;
     protected String password;
     protected String username;
     protected LocalDate register;
     protected String type;
-    protected String staus;
-    private String mail;
+    protected String status;
+    protected String mail;
 
-    protected User(String name, String username, String password, String type, String mail) {
+    public User(String name, String username, String password, String type, String mail) {
         this.name = name;
         this.username = username;
         this.password = password;
         this.register = LocalDate.now();
-        this.staus = "Active";
+        this.status = "Active";
         this.type = type;
         this.mail = mail;
     }
