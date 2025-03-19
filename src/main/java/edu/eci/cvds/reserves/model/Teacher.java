@@ -15,7 +15,6 @@ public class Teacher extends User {
     private String id;
     private String mail;
     private String status;
-    private String type;
 
     public Teacher(String name, String userName, String mail, String passwd) {
         super(name, userName, passwd);
