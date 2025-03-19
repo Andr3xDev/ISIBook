@@ -47,8 +47,4 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public void updateStatusByUsername(String username, String status) {
-        userRepository.updateStatusByUsername(username, status);
-    }
-
 }

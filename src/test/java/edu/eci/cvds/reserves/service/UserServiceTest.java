@@ -134,10 +134,4 @@ class UserServiceTest {
         assertEquals(teacher.getUsername(), targetUser.getUsername());
     }
 
-    @Test
-    void shouldUpdateUserStatus() {
-        userService.updateStatusByUsername(teacher.getUsername(), "Suspended");
-        verify(userRepository, times(1)).updateStatusByUsername(teacher.getUsername(), "Suspended");
-    }
-
 }
