@@ -8,7 +8,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -19,25 +18,12 @@ import org.mockito.MockitoAnnotations;
 
 import edu.eci.cvds.reserves.model.User;
 import edu.eci.cvds.reserves.repository.UserRepository;
-import edu.eci.cvds.reserves.utils.factory.UserFactory;
 
 class UserServiceTest {
 
-    private UserFactory userFactory;
     private User teacher;
     private User admin;
     private ArrayList<User> users;
-
-    private Map<String, String> paramsTeacher = Map.of(
-            "name", "Juan Jose",
-            "username", "juan.jose-j",
-            "mail", "juan.jose-j@escuelaing.edu.co",
-            "passwd", "juanito");
-
-    private Map<String, String> paramsAdmin = Map.of(
-            "name", "Super Admin",
-            "username", "adminUser",
-            "passwd", "adminPass");
 
     @Mock
     private UserRepository userRepository;
@@ -48,9 +34,8 @@ class UserServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        userFactory = new UserFactory();
-        admin = userFactory.createUser("Admin", paramsAdmin);
-        teacher = userFactory.createUser("Teacher", paramsTeacher);
+        admin = new User("John Doe", "johndoe", "password123", "Admin", "john@example.com");
+        teacher = new User("Jane Smith", "janesmith", "securepass", "Teacher", "jane@example.com");
 
         users = new ArrayList<User>();
         users.add(admin);
