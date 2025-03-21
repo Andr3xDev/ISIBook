@@ -47,6 +47,21 @@ public class UserController {
     }
 
     /**
+     * Get a user by ID.
+     *
+     * @param id the ID of the user
+     * @return a ResponseEntity containing the user or a not found status
+     */
+    @GetMapping("/{username}")
+    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
+        User user = userService.findUserByUsername(username);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(user);
+    }
+
+    /**
      * Create a new user.
      *
      * @param user the user to create
