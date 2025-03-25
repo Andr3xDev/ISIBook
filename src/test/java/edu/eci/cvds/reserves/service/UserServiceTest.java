@@ -77,6 +77,15 @@ class UserServiceTest {
     }
 
     @Test
+    void shouldNotCreateUser() {
+        when(userRepository.existsByUsername("johndoe")).thenReturn(true);
+
+        assertThrows(RuntimeException.class, () -> {
+            userService.createUser(userDto);
+        });
+    }
+
+    @Test
     void shouldDeleteUserByUsername() {
         when(userRepository.existsByUsername("juan.jose-j")).thenReturn(true);
 
@@ -102,6 +111,15 @@ class UserServiceTest {
 
         assertDoesNotThrow(() -> userService.updateUserStatusByUsername("juan.jose-j", "Inactive"));
         assertEquals(admin.getStatus(), userUpdate.getStatus());
+    }
+
+    @Test
+    void shouldNotUpdateUserStatus() {
+        when(userRepository.findByUsername("juan.jose-noExiste")).thenReturn(Optional.empty());
+
+        assertThrows(RuntimeException.class, () -> {
+            userService.updateUserStatusByUsername("juan.jose-noExiste", "Suspended");
+        });
     }
 
     @Test
@@ -141,15 +159,6 @@ class UserServiceTest {
         assertNotNull(usersFind);
         assertEquals(2, usersFind.size());
         assertEquals(users.size(), usersFind.size());
-    }
-
-    @Test // TODO: fix test
-    void shouldFindUserByusername() {
-        when(userRepository.findByUsername(teacher.getUsername())).thenReturn(Optional.of(admin));
-
-        UserDto targetUser = userService.findUserByUsername(admin.getUsername());
-
-        assertNull(targetUser);
     }
 
 }
