@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import edu.eci.cvds.reserves.dto.UserDto;
 import edu.eci.cvds.reserves.model.User;
 import edu.eci.cvds.reserves.service.UserService;
 
@@ -25,8 +26,8 @@ public class UserController {
      * @return a ResponseEntity containing the list of all users or an error message
      */
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.findAllUser();
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        List<UserDto> users = userService.findAllUser();
         if (users.isEmpty()) {
             return ResponseEntity.noContent().build();
         }

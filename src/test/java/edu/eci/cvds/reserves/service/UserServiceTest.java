@@ -16,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import edu.eci.cvds.reserves.dto.UserDto;
 import edu.eci.cvds.reserves.model.User;
 import edu.eci.cvds.reserves.repository.UserRepository;
 
@@ -100,7 +101,7 @@ class UserServiceTest {
     void shouldFindAllUser() {
         when(userRepository.findAll()).thenReturn(users);
 
-        List<User> usersFind = userService.findAllUser();
+        List<UserDto> usersFind = userService.findAllUser();
 
         assertNotNull(usersFind);
         assertEquals(2, usersFind.size());
