@@ -3,6 +3,7 @@ package edu.eci.cvds.reserves.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import edu.eci.cvds.reserves.dto.UserCreateDto;
 import edu.eci.cvds.reserves.dto.UserDto;
 import edu.eci.cvds.reserves.model.User;
 import edu.eci.cvds.reserves.service.UserService;
@@ -70,9 +71,10 @@ public class UserController {
      * @param user the user to create
      * @return a ResponseEntity containing the created user
      */
-    @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User createdUser = userService.createUser(user);
+    @PostMapping("/create")
+    public ResponseEntity<User> createUser(@RequestBody UserCreateDto userCreateDto) {
+        User createdUser = userService.createUser(userCreateDto);
+
         return ResponseEntity.ok(createdUser);
     }
 
@@ -94,7 +96,7 @@ public class UserController {
      * @param username the username of the user to delete
      * @return a ResponseEntity indicating the result of the operation
      */
-    @DeleteMapping("/username/{username}")
+    @DeleteMapping("/delete/{username}")
     public ResponseEntity<Void> deleteUserByUsername(@PathVariable String username) {
         if (userService.findUserByUsername(username) == null) {
             return ResponseEntity.notFound().build();

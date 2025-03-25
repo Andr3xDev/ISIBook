@@ -2,11 +2,10 @@ package edu.eci.cvds.reserves.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import edu.eci.cvds.reserves.dto.UserCreateDto;
 import edu.eci.cvds.reserves.dto.UserDto;
 import edu.eci.cvds.reserves.mapper.UserMapper;
 import edu.eci.cvds.reserves.model.User;
@@ -38,7 +37,8 @@ public class UserService {
      * @param user The user to be created.
      * @return The created user.
      */
-    public User createUser(User user) {
+    public User createUser(UserCreateDto usercCreateDto) {
+        User user = userMapper.toEntity(usercCreateDto);
         return userRepository.save(user);
     }
 
