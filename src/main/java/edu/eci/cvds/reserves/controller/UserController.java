@@ -1,6 +1,5 @@
 package edu.eci.cvds.reserves.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,8 +16,11 @@ import java.util.List;
 @RequestMapping("/api/users")
 public class UserController {
 
-    @Autowired
     private UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     /**
      * Get all users.
@@ -53,9 +55,9 @@ public class UserController {
      * @param id the ID of the user
      * @return a ResponseEntity containing the user or a not found status
      */
-    @GetMapping("/{username}")
-    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
-        User user = userService.findUserByUsername(username);
+    @GetMapping("/username/{username}")
+    public ResponseEntity<UserDto> getUserByUsername(@PathVariable String username) {
+        UserDto user = userService.findUserByUsername(username);
         if (user == null) {
             return ResponseEntity.notFound().build();
         }

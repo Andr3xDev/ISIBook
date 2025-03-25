@@ -114,7 +114,7 @@ class UserServiceTest {
         when(userRepository.findByUsername(teacher.getUsername())).thenReturn(Optional.of(teacher));
 
         User createdUser = userService.createUser(teacher);
-        User targetUser = userService.findUserByUsername(createdUser.getUsername());
+        UserDto targetUser = userService.findUserByUsername(createdUser.getUsername());
 
         assertNotNull(targetUser);
         assertEquals(teacher.getUsername(), targetUser.getUsername());

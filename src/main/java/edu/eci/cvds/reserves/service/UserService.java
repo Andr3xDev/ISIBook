@@ -22,7 +22,7 @@ public class UserService {
     private UserMapper userMapper;
 
     /**
-     * Constructor for UserService.
+     * Constructor for UserService, it injects all dependencies.
      *
      * @param userRepository The repository for user data access.
      * @param userMapper     The mapper for converting user entities.
@@ -72,8 +72,10 @@ public class UserService {
      * @param username The username of the user to find.
      * @return The user if found, or null if not found.
      */
-    public User findUserByUsername(String username) {
-        return userRepository.findByUsername(username).orElse(null);
+    public UserDto findUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .map(userMapper::toDto)
+                .orElse(null);
     }
 
     /**
