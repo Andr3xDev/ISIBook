@@ -20,12 +20,13 @@
 
     <properties>
         <java.version>17</java.version>
+        <org.mapstruct.version>1.6.3</org.mapstruct.version>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.organization>dev-builders</sonar.organization>
         <sonar.projectKey>daviespr1406_Reservas_Sys</sonar.projectKey>
         <sonar.projectName>Reservas_Sys</sonar.projectName>  
         <sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
-        <sonar.coverage.exclusions>**/model/*,**/controller/*,**/utils/*,**/config/*,**/ReservesApplication.java</sonar.coverage.exclusions>
+        <sonar.coverage.exclusions>**/model/*,**/dto/*,**/controller/*,**/utils/*,**/config/*,**/ReservesApplication.java</sonar.coverage.exclusions>
         <sonar.coverage.jacoco.xmlReportPaths>../app-it/target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
 
@@ -69,16 +70,35 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>1.5.5.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>1.5.5.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok-mapstruct-binding</artifactId>
+            <version>0.2.0</version>
+            <scope>provided</scope>
+        </dependency>
+        
     </dependencies>
 
     <build>
         <plugins>
-        
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -99,6 +119,7 @@
                             <excludes>
                                 <exclude>**/controller/*</exclude>
                                 <exclude>**/model/*</exclude>
+                                <exclude>**/dto/*</exclude>
                                 <exclude>**/config/*</exclude>
                                 <exclude>**/ReservesApplication.class</exclude>
                             </excludes>
@@ -131,6 +152,7 @@
                             <excludes>
                                 <exclude>**/controller/*</exclude>
                                 <exclude>**/model/*</exclude>
+                                <exclude>**/dto/*</exclude>
                                 <exclude>**/config/*</exclude>
                                 <exclude>**/ReservesApplication.class</exclude>
                             </excludes>
@@ -138,11 +160,13 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>4.0.0.4121</version>
             </plugin>
+
         </plugins>
     </build>
 </project>
