@@ -1,6 +1,7 @@
 package edu.eci.cvds.reserves.service;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -16,6 +17,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import edu.eci.cvds.reserves.dto.UserCreateDto;
+import edu.eci.cvds.reserves.dto.UserDto;
+import edu.eci.cvds.reserves.mapper.UserMapper;
 import edu.eci.cvds.reserves.model.User;
 import edu.eci.cvds.reserves.repository.UserRepository;
 
@@ -23,10 +27,15 @@ class UserServiceTest {
 
     private User teacher;
     private User admin;
+    private UserCreateDto userDto;
+    private UserDto userDto2;
     private ArrayList<User> users;
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private UserMapper userMapper;
 
     @InjectMocks
     private UserService userService;
@@ -34,8 +43,22 @@ class UserServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        admin = new User("John Doe", "johndoe", "password123", "Admin", "john@example.com");
+        admin = new User("John Doe", "juan.jose-j", "password123", "Admin", "john@example.com");
         teacher = new User("Jane Smith", "janesmith", "securepass", "Teacher", "jane@example.com");
+
+        userDto = new UserCreateDto();
+        userDto.setName("John Doe");
+        userDto.setUsername("johndoe");
+        userDto.setPassword("password123");
+        userDto.setType("Admin");
+        userDto.setMail("john@example.com");
+
+        userDto2 = new UserDto();
+        userDto2.setName("John Doe");
+        userDto2.setUsername("johndoe");
+        userDto2.setType("Admin");
+        userDto2.setMail("john@example.com");
+        userDto2.setStatus("Inactive");
 
         users = new ArrayList<User>();
         users.add(admin);
@@ -43,13 +66,23 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldCreateUserAdmin() {
+    void shouldCreateUser() {
         when(userRepository.save(admin)).thenReturn(admin);
-        when(userRepository.findByUsername(admin.getUsername())).thenReturn(Optional.of(admin));
-        User createdUser = userService.createUser(admin);
+        when(userMapper.toEntity(userDto)).thenReturn(admin);
+
+        User createdUser = userService.createUser(userDto);
 
         assertNotNull(createdUser);
         assertEquals(admin.getUsername(), createdUser.getUsername());
+    }
+
+    @Test
+    void shouldNotCreateUser() {
+        when(userRepository.existsByUsername("johndoe")).thenReturn(true);
+
+        assertThrows(RuntimeException.class, () -> {
+            userService.createUser(userDto);
+        });
     }
 
     @Test
@@ -66,6 +99,27 @@ class UserServiceTest {
 
         assertThrows(RuntimeException.class, () -> userService.deleteUserByUsername("juan.jose-j"));
         verify(userRepository, never()).deleteByUsername("juan.jose-j");
+    }
+
+    @Test
+    void shouldUpdateUserStatus() {
+        when(userRepository.findByUsername("juan.jose-j")).thenReturn(Optional.of(admin));
+        when(userRepository.save(any(User.class))).thenReturn(admin);
+        when(userMapper.toDto(admin)).thenReturn(userDto2);
+
+        UserDto userUpdate = userService.updateUserStatusByUsername("juan.jose-j", "Inactive");
+
+        assertDoesNotThrow(() -> userService.updateUserStatusByUsername("juan.jose-j", "Inactive"));
+        assertEquals(admin.getStatus(), userUpdate.getStatus());
+    }
+
+    @Test
+    void shouldNotUpdateUserStatus() {
+        when(userRepository.findByUsername("juan.jose-noExiste")).thenReturn(Optional.empty());
+
+        assertThrows(RuntimeException.class, () -> {
+            userService.updateUserStatusByUsername("juan.jose-noExiste", "Suspended");
+        });
     }
 
     @Test
@@ -100,23 +154,11 @@ class UserServiceTest {
     void shouldFindAllUser() {
         when(userRepository.findAll()).thenReturn(users);
 
-        List<User> usersFind = userService.findAllUser();
+        List<UserDto> usersFind = userService.findAllUser();
 
         assertNotNull(usersFind);
         assertEquals(2, usersFind.size());
         assertEquals(users.size(), usersFind.size());
-    }
-
-    @Test
-    void shouldFindUserByusername() {
-        when(userRepository.save(teacher)).thenReturn(teacher);
-        when(userRepository.findByUsername(teacher.getUsername())).thenReturn(Optional.of(teacher));
-
-        User createdUser = userService.createUser(teacher);
-        User targetUser = userService.findUserByUsername(createdUser.getUsername());
-
-        assertNotNull(targetUser);
-        assertEquals(teacher.getUsername(), targetUser.getUsername());
     }
 
 }
