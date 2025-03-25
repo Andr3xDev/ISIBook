@@ -39,6 +39,9 @@ public class UserService {
      */
     public User createUser(UserCreateDto usercCreateDto) {
         User user = userMapper.toEntity(usercCreateDto);
+        if (userRepository.existsByUsername(user.getUsername())) {
+            throw new RuntimeException("TODO");
+        }
         return userRepository.save(user);
     }
 
@@ -54,6 +57,14 @@ public class UserService {
         } else {
             throw new RuntimeException("TODO");
         }
+    }
+
+    public UserDto updateUserStatusByUsername(String username, String status) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        user.setStatus(status);
+        User updatedUser = userRepository.save(user);
+        return UserMapper.INSTANCE.toDto(updatedUser);
     }
 
     /**

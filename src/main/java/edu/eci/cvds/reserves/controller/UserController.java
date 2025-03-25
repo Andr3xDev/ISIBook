@@ -85,9 +85,14 @@ public class UserController {
      * @param user the updated user data
      * @return a ResponseEntity containing the updated user or a not found status
      */
-    @PutMapping("/{id}")
-    public User updateUser(@PathVariable String id, @RequestBody User user) {
-        return null;
+    @PutMapping("/update/status/{username}/")
+    public ResponseEntity<UserDto> updateUserByUsername(@PathVariable("username") String username,
+            @RequestParam String status) {
+        if (userService.findUserByUsername(username) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        UserDto userDto = userService.updateUserStatusByUsername(username, status);
+        return ResponseEntity.ok(userDto);
     }
 
     /**

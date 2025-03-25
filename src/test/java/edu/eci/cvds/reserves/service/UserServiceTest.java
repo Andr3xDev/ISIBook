@@ -1,6 +1,7 @@
 package edu.eci.cvds.reserves.service;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -27,6 +28,7 @@ class UserServiceTest {
     private User teacher;
     private User admin;
     private UserCreateDto userDto;
+    private UserDto userDto2;
     private ArrayList<User> users;
 
     @Mock
@@ -41,7 +43,7 @@ class UserServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        admin = new User("John Doe", "johndoe", "password123", "Admin", "john@example.com");
+        admin = new User("John Doe", "juan.jose-j", "password123", "Admin", "john@example.com");
         teacher = new User("Jane Smith", "janesmith", "securepass", "Teacher", "jane@example.com");
 
         userDto = new UserCreateDto();
@@ -50,6 +52,13 @@ class UserServiceTest {
         userDto.setPassword("password123");
         userDto.setType("Admin");
         userDto.setMail("john@example.com");
+
+        userDto2 = new UserDto();
+        userDto2.setName("John Doe");
+        userDto2.setUsername("johndoe");
+        userDto2.setType("Admin");
+        userDto2.setMail("john@example.com");
+        userDto2.setStatus("Inactive");
 
         users = new ArrayList<User>();
         users.add(admin);
@@ -81,6 +90,18 @@ class UserServiceTest {
 
         assertThrows(RuntimeException.class, () -> userService.deleteUserByUsername("juan.jose-j"));
         verify(userRepository, never()).deleteByUsername("juan.jose-j");
+    }
+
+    @Test
+    void shouldUpdateUserStatus() {
+        when(userRepository.findByUsername("juan.jose-j")).thenReturn(Optional.of(admin));
+        when(userRepository.save(any(User.class))).thenReturn(admin);
+        when(userMapper.toDto(admin)).thenReturn(userDto2);
+
+        UserDto userUpdate = userService.updateUserStatusByUsername("juan.jose-j", "Inactive");
+
+        assertDoesNotThrow(() -> userService.updateUserStatusByUsername("juan.jose-j", "Inactive"));
+        assertEquals(admin.getStatus(), userUpdate.getStatus());
     }
 
     @Test
