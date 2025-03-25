@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy JAR app to Azure Web App - isibook
+name: Build and deploy JAR app to Azure Web App - testeci
 
 on:
   push:
@@ -52,15 +52,15 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_5EF9DE856F45469688BFFCA118A61EF9 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_D085FC93B0034540998EC3B2685686B5 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_4C2F447EE1AF4803A205F6E963C295E6 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_169F1D73721A4FA286BAA5C8147C6F28 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_2D64C1571FEA4807AE6E2FBCD562BFC9 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_CAD837A892C94863B1B938D09ACDD4E4 }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'isibook'
+          app-name: 'testeci'
           slot-name: 'Production'
           package: '*.jar'
           
