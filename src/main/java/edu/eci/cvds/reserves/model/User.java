@@ -17,13 +17,13 @@ public class User {
 
     @Id
     private String id;
-    protected String name;
-    protected String password;
-    protected String username;
-    protected LocalDate register;
-    protected String type;
-    protected String status;
-    protected String mail;
+    private String name;
+    private String password;
+    private String username;
+    private LocalDate register;
+    private String type;
+    private String status;
+    private String mail;
 
     public User(String name, String username, String password, String type, String mail) {
         this.name = name;
