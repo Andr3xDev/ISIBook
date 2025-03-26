@@ -73,8 +73,10 @@ public class UserService {
      * @param id The ID of the user to find.
      * @return An Optional containing the user if found, or empty if not found.
      */
-    public Optional<User> findUserById(String id) {
-        return userRepository.findById(id);
+    public UserDto findUserById(String id) {
+        return userRepository.findById(id)
+                .map(userMapper::toDto)
+                .orElse(null);
     }
 
     /**
