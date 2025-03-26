@@ -161,4 +161,49 @@ class UserServiceTest {
         assertEquals(users.size(), usersFind.size());
     }
 
+    @Test
+    void shouldFindUserByusername() {
+        when(userRepository.findByUsername(admin.getUsername())).thenReturn(Optional.of(admin));
+        when(userMapper.toDto(admin)).thenReturn(userDto2);
+
+        UserDto resultDto = userService.findUserByUsername(admin.getUsername());
+
+        assertNotNull(resultDto);
+        assertEquals(userDto2.getUsername(), resultDto.getUsername());
+        assertEquals(userDto2.getName(), resultDto.getName());
+        verify(userRepository, times(1)).findByUsername(admin.getUsername());
+    }
+
+    @Test
+    void shouldNotFindUserByusername() {
+        when(userRepository.findByUsername("jose jose")).thenReturn(Optional.empty());
+
+        UserDto resultDto = userService.findUserByUsername("jose jose");
+
+        assertNull(resultDto);
+        verify(userRepository, times(1)).findByUsername("jose jose");
+    }
+
+    @Test
+    void shouldFindUserById() {
+        when(userRepository.findById(admin.getId())).thenReturn(Optional.of(admin));
+        when(userMapper.toDto(admin)).thenReturn(userDto2);
+
+        UserDto resultDto = userService.findUserById(admin.getId());
+
+        assertNotNull(resultDto);
+        assertEquals(userDto2.getUsername(), resultDto.getUsername());
+        assertEquals(userDto2.getName(), resultDto.getName());
+        verify(userRepository, times(1)).findById(admin.getId());
+    }
+
+    @Test
+    void shouldNotFindUserById() {
+        when(userRepository.findById("123")).thenReturn(Optional.empty());
+
+        UserDto resultDto = userService.findUserById("123");
+
+        assertNull(resultDto);
+        verify(userRepository, times(1)).findById("123");
+    }
 }
