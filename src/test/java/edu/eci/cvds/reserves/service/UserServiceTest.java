@@ -161,4 +161,26 @@ class UserServiceTest {
         assertEquals(users.size(), usersFind.size());
     }
 
+    @Test
+    void shouldFindUserByusername() {
+        when(userRepository.findByUsername(admin.getUsername())).thenReturn(Optional.of(admin));
+        when(userMapper.toDto(admin)).thenReturn(userDto2);
+
+        UserDto resultDto = userService.findUserByUsername(admin.getUsername());
+
+        assertNotNull(resultDto);
+        assertEquals(userDto2.getUsername(), resultDto.getUsername());
+        assertEquals(userDto2.getName(), resultDto.getName());
+        verify(userRepository, times(1)).findByUsername(admin.getUsername());
+    }
+
+    @Test
+    void shouldNotFindUserByusername() {
+        when(userRepository.findByUsername("jose jose")).thenReturn(Optional.empty());
+
+        UserDto resultDto = userService.findUserByUsername("jose jose");
+
+        assertNull(resultDto);
+        verify(userRepository, times(1)).findByUsername("jose jose");
+    }
 }
