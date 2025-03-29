@@ -1,9 +1,11 @@
 package edu.eci.cvds.reserves.service;
 
 import java.util.List;
-import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import edu.eci.cvds.reserves.dto.UserCreateDto;
 import edu.eci.cvds.reserves.dto.UserDto;
@@ -19,6 +21,7 @@ public class UserService {
 
     private UserRepository userRepository;
     private UserMapper userMapper;
+    private PasswordEncoder passwordEncoder;
 
     /**
      * Constructor for UserService, it injects all dependencies.
@@ -26,9 +29,10 @@ public class UserService {
      * @param userRepository The repository for user data access.
      * @param userMapper     The mapper for converting user entities.
      */
-    public UserService(UserRepository userRepository, UserMapper userMapper) {
+    public UserService(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     /**
@@ -38,10 +42,12 @@ public class UserService {
      * @return The created user.
      */
     public User createUser(UserCreateDto usercCreateDto) {
-        User user = userMapper.toEntity(usercCreateDto);
-        if (userRepository.existsByUsername(user.getUsername())) {
-            throw new RuntimeException("TODO");
+        if (userRepository.existsByUsername(usercCreateDto.getUsername())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El nombre de usuario ya existe");
         }
+        User user = userMapper.toEntity(usercCreateDto);
+        String password = passwordEncoder.encode(user.getPassword());
+        user.setPassword(password);
         return userRepository.save(user);
     }
 
@@ -55,13 +61,12 @@ public class UserService {
         if (userRepository.existsByUsername(username)) {
             userRepository.deleteByUsername(username);
         } else {
-            throw new RuntimeException("TODO");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado: " + username);
         }
     }
 
     public UserDto updateUserStatusByUsername(String username, String status) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        User user = userRepository.findByUsername(username);
         user.setStatus(status);
         User updatedUser = userRepository.save(user);
         return UserMapper.INSTANCE.toDto(updatedUser);
@@ -73,8 +78,10 @@ public class UserService {
      * @param id The ID of the user to find.
      * @return An Optional containing the user if found, or empty if not found.
      */
-    public Optional<User> findUserById(String id) {
-        return userRepository.findById(id);
+    public UserDto findUserById(String id) {
+        return userRepository.findById(id)
+                .map(userMapper::toDto)
+                .orElse(null);
     }
 
     /**
@@ -84,9 +91,8 @@ public class UserService {
      * @return The user if found, or null if not found.
      */
     public UserDto findUserByUsername(String username) {
-        return userRepository.findByUsername(username)
-                .map(userMapper::toDto)
-                .orElse(null);
+        User user = userRepository.findByUsername(username);
+        return user != null ? userMapper.toDto(user) : null;
     }
 
     /**
@@ -117,4 +123,5 @@ public class UserService {
                 .stream().map(userMapper::toDto)
                 .toList();
     }
+
 }

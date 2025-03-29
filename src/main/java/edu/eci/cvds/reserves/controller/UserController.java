@@ -44,10 +44,13 @@ public class UserController {
      * @return a ResponseEntity containing the user or a not found status
      */
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable String id) {
-        return userService.findUserById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<UserDto> getUserById(@PathVariable String id) {
+        UserDto userDto = userService.findUserById(id);
+        if (userDto != null) {
+            return ResponseEntity.ok(userDto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     /**
@@ -73,9 +76,12 @@ public class UserController {
      */
     @PostMapping("/create")
     public ResponseEntity<User> createUser(@RequestBody UserCreateDto userCreateDto) {
-        User createdUser = userService.createUser(userCreateDto);
-
-        return ResponseEntity.ok(createdUser);
+        try {
+            User createdUser = userService.createUser(userCreateDto);
+            return ResponseEntity.ok(createdUser);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     /**
