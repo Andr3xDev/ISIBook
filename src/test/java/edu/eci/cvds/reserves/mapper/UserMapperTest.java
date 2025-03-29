@@ -12,6 +12,9 @@ import edu.eci.cvds.reserves.dto.UserCreateDto;
 import edu.eci.cvds.reserves.dto.UserDto;
 import edu.eci.cvds.reserves.model.User;
 
+/**
+ * Test class for UserMapper.
+ */
 @SpringBootTest
 class UserMapperTest {
 
@@ -74,4 +77,5 @@ class UserMapperTest {
         User userDto = userMapper.toEntity(admin);
         assertNull(userDto);
     }
+
 }

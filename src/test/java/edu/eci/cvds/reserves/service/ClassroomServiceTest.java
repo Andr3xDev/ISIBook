@@ -20,6 +20,9 @@ import org.mockito.MockitoAnnotations;
 import edu.eci.cvds.reserves.model.Classroom;
 import edu.eci.cvds.reserves.repository.ClassroomRepository;
 
+/**
+ * Test class for ClassroomService.
+ */
 class ClassroomServiceTest {
 
     Classroom classroom;

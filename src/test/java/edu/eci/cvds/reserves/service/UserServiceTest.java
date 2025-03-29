@@ -24,6 +24,9 @@ import edu.eci.cvds.reserves.mapper.UserMapper;
 import edu.eci.cvds.reserves.model.User;
 import edu.eci.cvds.reserves.repository.UserRepository;
 
+/**
+ * Test class for UserService.
+ */
 class UserServiceTest {
 
     private User teacher;
@@ -210,4 +213,5 @@ class UserServiceTest {
         assertNull(resultDto);
         verify(userRepository, times(1)).findById("123");
     }
+
 }
