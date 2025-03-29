@@ -2,8 +2,10 @@ package edu.eci.cvds.reserves.service;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import edu.eci.cvds.reserves.dto.UserCreateDto;
 import edu.eci.cvds.reserves.dto.UserDto;
@@ -41,7 +43,7 @@ public class UserService {
      */
     public User createUser(UserCreateDto usercCreateDto) {
         if (userRepository.existsByUsername(usercCreateDto.getUsername())) {
-            throw new RuntimeException("TODO");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El nombre de usuario ya existe");
         }
         User user = userMapper.toEntity(usercCreateDto);
         String password = passwordEncoder.encode(user.getPassword());
@@ -59,7 +61,7 @@ public class UserService {
         if (userRepository.existsByUsername(username)) {
             userRepository.deleteByUsername(username);
         } else {
-            throw new RuntimeException("TODO");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado: " + username);
         }
     }
 
