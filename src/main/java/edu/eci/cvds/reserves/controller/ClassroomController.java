@@ -2,7 +2,6 @@ package edu.eci.cvds.reserves.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,10 +12,13 @@ import edu.eci.cvds.reserves.service.ClassroomService;
 @RequestMapping("/api/classrooms")
 public class ClassroomController {
 
-    @Autowired
     private ClassroomService classroomService;
 
-    @PostMapping // TODO: add DTO
+    public ClassroomController(ClassroomService classroomService) {
+        this.classroomService = classroomService;
+    }
+
+    @PostMapping
     public ResponseEntity<Classroom> createClassroom(@RequestBody Classroom classroom) {
         Classroom createdClassroom = classroomService.createClassroom(classroom);
         if (createdClassroom == null) {
@@ -51,4 +53,5 @@ public class ClassroomController {
         }
         return ResponseEntity.ok(classrooms);
     }
+
 }
