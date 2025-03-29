@@ -15,6 +15,8 @@ import lombok.NoArgsConstructor;
 @Document(collection = "users")
 public class User {
 
+    private static final String ACTIVE = "ACTIVE";
+
     @Id
     private String id;
     private String name;
@@ -30,7 +32,7 @@ public class User {
         this.username = username;
         this.password = password;
         this.register = LocalDate.now();
-        this.status = "Active";
+        this.status = ACTIVE;
         this.type = type;
         this.mail = mail;
     }
