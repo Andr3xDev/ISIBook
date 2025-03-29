@@ -8,11 +8,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Represents a reserve in the system.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Document(collection = "reserves")
 public class Reserve {
+
     @Id
     private String id;
     private String userId;

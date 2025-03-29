@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Represents a classroom in the system.
+ */
 @Document(collection = "classrooms")
 @Data
 @NoArgsConstructor

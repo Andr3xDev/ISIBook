@@ -2,6 +2,9 @@ package edu.eci.cvds.reserves.model;
 
 import lombok.Data;
 
+/**
+ * Represents the specifications of a classroom.
+ */
 @Data
 public class Specs {
     private String capacity;
