@@ -1,14 +1,18 @@
 package edu.eci.cvds.reserves.model;
 
 import java.time.LocalDateTime;
-import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Getter
-@Setter
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Document(collection = "reserves")
-public class Reserve{
+public class Reserve {
     @Id
     private String id;
     private String userId;
@@ -19,7 +23,9 @@ public class Reserve{
     private boolean repetitive;
     private String purpose;
     private String repetitiveTime;
-    public Reserve(String userId,String classroomId,LocalDateTime startDate,LocalDateTime finishDate,String status,boolean repetitive,String purpose,String repetitiveTime){
+
+    public Reserve(String userId, String classroomId, LocalDateTime startDate, LocalDateTime finishDate, String status,
+            boolean repetitive, String purpose, String repetitiveTime) {
         this.userId = userId;
         this.classroomId = classroomId;
         this.startDate = startDate;
@@ -29,5 +35,5 @@ public class Reserve{
         this.purpose = purpose;
         this.repetitiveTime = repetitiveTime;
     }
-}
 
+}
