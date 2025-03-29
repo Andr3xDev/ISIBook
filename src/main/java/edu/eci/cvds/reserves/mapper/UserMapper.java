@@ -16,12 +16,10 @@ public interface UserMapper {
     UserDto toDto(User user);
 
     @Mapping(target = "password", ignore = true)
-    @Mapping(target = "authorities", ignore = true)
     User toEntity(UserDto userDTO);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "status", constant = "Active")
     @Mapping(target = "register", expression = "java(java.time.LocalDate.now())")
-    @Mapping(target = "authorities", ignore = true)
     User toEntity(UserCreateDto userCreateDto);
 }

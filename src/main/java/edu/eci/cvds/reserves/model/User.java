@@ -1,13 +1,9 @@
 package edu.eci.cvds.reserves.model;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(collection = "users")
-public class User implements UserDetails {
+public class User {
 
     private static final String ACTIVE = "ACTIVE";
 
@@ -41,13 +37,4 @@ public class User implements UserDetails {
         this.mail = mail;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(() -> "ROLE_" + type.toUpperCase());
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return status.equalsIgnoreCase(ACTIVE);
-    }
 }
