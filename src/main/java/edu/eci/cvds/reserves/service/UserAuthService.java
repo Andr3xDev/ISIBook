@@ -8,6 +8,10 @@ import edu.eci.cvds.reserves.model.User;
 import edu.eci.cvds.reserves.model.UserAuth;
 import edu.eci.cvds.reserves.repository.UserRepository;
 
+/**
+ * Service class for user authentication.
+ * Implements UserDetailsService to load user-specific data.
+ */
 @Service
 public class UserAuthService implements UserDetailsService {
 
@@ -17,6 +21,13 @@ public class UserAuthService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Loads user details by username.
+     *
+     * @param username the username of the user
+     * @return UserAuth object containing user details
+     * @throws UsernameNotFoundException if the user is not found
+     */
     @Override
     public UserAuth loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);

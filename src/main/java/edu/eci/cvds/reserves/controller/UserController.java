@@ -54,9 +54,9 @@ public class UserController {
     }
 
     /**
-     * Get a user by ID.
+     * Get a user by username.
      *
-     * @param id the ID of the user
+     * @param id the username of the user
      * @return a ResponseEntity containing the user or a not found status
      */
     @GetMapping("/username/{username}")
@@ -85,10 +85,9 @@ public class UserController {
     }
 
     /**
-     * Update a user by ID.
+     * Update a user by Username.
      *
-     * @param id   the ID of the user to update
-     * @param user the updated user data
+     * @param username the ID of the user to update
      * @return a ResponseEntity containing the updated user or a not found status
      */
     @PutMapping("/update/status/{username}/")
@@ -115,4 +114,5 @@ public class UserController {
         userService.deleteUserByUsername(username);
         return ResponseEntity.noContent().build();
     }
+
 }

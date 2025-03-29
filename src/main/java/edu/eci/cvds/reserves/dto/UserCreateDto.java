@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Data Transfer Object for creating a new user.
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

@@ -8,6 +8,10 @@ import edu.eci.cvds.reserves.dto.UserCreateDto;
 import edu.eci.cvds.reserves.dto.UserDto;
 import edu.eci.cvds.reserves.model.User;
 
+/**
+ * Mapper interface for converting between User and UserDto objects.
+ * This interface uses MapStruct to generate the implementation at compile time.
+ */
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 

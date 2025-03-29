@@ -13,6 +13,7 @@ import java.time.temporal.ChronoUnit;
  */
 @Service
 public class ReserveService {
+
     private final ReserveRepository reserveRepository;
 
     /**
@@ -166,4 +167,5 @@ public class ReserveService {
         LocalDateTime endOfDay = startOfDay.plus(1, ChronoUnit.DAYS);
         return reserveRepository.findByStartDateBetween(startOfDay, endOfDay);
     }
+
 }

@@ -16,6 +16,9 @@ import edu.eci.cvds.reserves.model.User;
 import edu.eci.cvds.reserves.model.UserAuth;
 import edu.eci.cvds.reserves.repository.UserRepository;
 
+/**
+ * Test class for UserAuthService.
+ */
 class UserAuthServiceTest {
 
     @Mock
@@ -48,4 +51,5 @@ class UserAuthServiceTest {
             userAuthService.loadUserByUsername("juan.jose-j");
         });
     }
+
 }
