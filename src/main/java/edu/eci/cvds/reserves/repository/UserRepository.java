@@ -7,6 +7,10 @@ import org.springframework.stereotype.Repository;
 
 import edu.eci.cvds.reserves.model.User;
 
+/**
+ * Repository interface for User entity.
+ * Provides methods to perform CRUD operations on User collection.
+ */
 @Repository
 public interface UserRepository extends MongoRepository<User, String> {
 

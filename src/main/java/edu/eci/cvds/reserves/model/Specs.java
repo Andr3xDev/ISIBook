@@ -7,6 +7,7 @@ import lombok.Data;
  */
 @Data
 public class Specs {
+
     private String capacity;
     private String type;
     private String numComputers;
@@ -14,4 +15,5 @@ public class Specs {
     private Boolean projector;
     private Boolean touchScreen;
     private String airConditioning;
+
 }
