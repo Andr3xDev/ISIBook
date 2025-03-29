@@ -53,25 +53,17 @@ public class SecurityConfig {
      * Security Configuration:
      * - Permits access to "/auth/login" and "/auth/logout" endpoints without
      * authentication.
-     * - Requires authentication for all other requests.
-     * - Configures form-based login with custom parameters for username and
-     * password, and a default success URL.
-     * - Configures logout functionality with a custom logout URL and a redirect to
-     * the login page upon successful logout.
+     * - Front does the authentication and sends the token in the header.
+     * - Disables CSRF protection.
      */
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/login", "/auth/logout").permitAll()
-                .anyRequest().authenticated())
-                .formLogin(login -> login
-                        .loginProcessingUrl("/login")
-                        .usernameParameter("username")
-                        .passwordParameter("password")
-                        .defaultSuccessUrl("/auth/user", true))
-                .logout(logout -> logout
-                        .logoutUrl("/auth/logout")
-                        .logoutSuccessUrl("/auth/login"))
+        return http
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/auth/login").permitAll()
+                        .anyRequest().authenticated())
+                .sessionManagement(session -> session.disable())
                 .build();
     }
 

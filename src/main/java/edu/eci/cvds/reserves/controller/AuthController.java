@@ -1,73 +1,38 @@
 package edu.eci.cvds.reserves.controller;
 
-import org.springframework.http.HttpStatus;
+import edu.eci.cvds.reserves.dto.AuthRequest;
+import edu.eci.cvds.reserves.dto.AuthResponse;
+import edu.eci.cvds.reserves.config.JwtService;
+import edu.eci.cvds.reserves.service.UserAuthService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
-/**
- * AuthController is a REST controller that handles authentication-related
- * endpoints.
- * It provides functionality for login, retrieving the authenticated user, and
- * logout.
- */
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
-    /**
-     * Handles the login request.
-     * This endpoint is managed automatically by Spring Security.
-     * It is not necessary to implement any logic here, as Spring Security handles
-     * the authentication process.
-     * 
-     * @return a ResponseEntity indicating the login status
-     */
+    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
+    private final UserAuthService userAuthService;
+
+    public AuthController(AuthenticationManager authenticationManager, JwtService jwtService,
+            UserAuthService userAuthService) {
+        this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
+        this.userAuthService = userAuthService;
+    }
+
     @PostMapping("/login")
-    public ResponseEntity<String> login() {
-        // El login es manejado automáticamente por Spring Security
-        return ResponseEntity.ok("Login exitoso. Sesión iniciada.");
-    }
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest authRequest) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
 
-    /**
-     * Retrieves the authenticated user.
-     * 
-     * @return a ResponseEntity containing the authenticated user's details or an
-     *         error message
-     */
-    @GetMapping("/user")
-    public ResponseEntity<Object> getAuthenticatedUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            return ResponseEntity.ok(authentication.getPrincipal());
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No hay usuario autenticado");
-    }
+        UserDetails user = userAuthService.loadUserByUsername(authRequest.getUsername());
+        String token = jwtService.generateToken(user.getUsername());
 
-    /**
-     * Handles the logout request.
-     * This endpoint is managed automatically by Spring Security.
-     * It is not necessary to implement any logic here, as Spring Security handles
-     * the logout process.
-     * 
-     * @param request  the HttpServletRequest
-     * @param response the HttpServletResponse
-     * @return a ResponseEntity indicating the logout status
-     */
-    @PostMapping("/logout")
-    public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null) {
-            new SecurityContextLogoutHandler().logout(request, response, auth);
-        }
-        return ResponseEntity.ok("Logout exitoso. Sesión cerrada.");
+        return ResponseEntity.ok(new AuthResponse(token));
     }
 }
