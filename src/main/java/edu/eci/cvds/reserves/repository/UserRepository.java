@@ -1,7 +1,6 @@
 package edu.eci.cvds.reserves.repository;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
@@ -15,7 +14,7 @@ public interface UserRepository extends MongoRepository<User, String> {
 
     boolean existsByUsername(String username);
 
-    Optional<User> findByUsername(String username);
+    User findByUsername(String username);
 
     List<User> findAllByType(String type);
 

@@ -103,7 +103,7 @@ class UserServiceTest {
 
     @Test
     void shouldUpdateUserStatus() {
-        when(userRepository.findByUsername("juan.jose-j")).thenReturn(Optional.of(admin));
+        when(userRepository.findByUsername("juan.jose-j")).thenReturn(admin);
         when(userRepository.save(any(User.class))).thenReturn(admin);
         when(userMapper.toDto(admin)).thenReturn(userDto2);
 
@@ -115,7 +115,7 @@ class UserServiceTest {
 
     @Test
     void shouldNotUpdateUserStatus() {
-        when(userRepository.findByUsername("juan.jose-noExiste")).thenReturn(Optional.empty());
+        when(userRepository.findByUsername("juan.jose-noExiste")).thenReturn(null);
 
         assertThrows(RuntimeException.class, () -> {
             userService.updateUserStatusByUsername("juan.jose-noExiste", "Suspended");
@@ -163,7 +163,7 @@ class UserServiceTest {
 
     @Test
     void shouldFindUserByusername() {
-        when(userRepository.findByUsername(admin.getUsername())).thenReturn(Optional.of(admin));
+        when(userRepository.findByUsername(admin.getUsername())).thenReturn(admin);
         when(userMapper.toDto(admin)).thenReturn(userDto2);
 
         UserDto resultDto = userService.findUserByUsername(admin.getUsername());
@@ -176,7 +176,7 @@ class UserServiceTest {
 
     @Test
     void shouldNotFindUserByusername() {
-        when(userRepository.findByUsername("jose jose")).thenReturn(Optional.empty());
+        when(userRepository.findByUsername("jose jose")).thenReturn(null);
 
         UserDto resultDto = userService.findUserByUsername("jose jose");
 
