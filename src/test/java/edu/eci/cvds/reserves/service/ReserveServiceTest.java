@@ -145,8 +145,8 @@ class ReserveServiceTest {
     @Test
     void testGetReservesByHour() {
         LocalDateTime startOfHour = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
-        LocalDateTime endOfHour = startOfHour.plus(1, ChronoUnit.HOURS);
-        when(reserveRepository.findByStartDateBetween(startOfHour, endOfHour)).thenReturn(List.of(testReserve));
+        LocalDateTime endOfHour = startOfHour.plusHours(1).plusMinutes(30);
+        when(reserveRepository.findByStartDate(startOfHour)).thenReturn(List.of(testReserve));
 
         List<Reserve> reserves = reserveService.getReservesByHour(startOfHour);
         assertFalse(reserves.isEmpty());
