@@ -14,7 +14,7 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY = "CVDS20251CVDS20251CVDS20251CVDS20251CVDS20251";
+    private static final String SECRET_KEY = "CiclosDeVidaDelDesarrolloDeSoftware20251";
 
     private Key getSigningKey() {
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
