@@ -5,6 +5,8 @@ import edu.eci.cvds.reserves.service.ReserveService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -136,17 +138,13 @@ public class ReserveController {
      */
     @GetMapping("/week")
     public ResponseEntity<List<Reserve>> getReservesByWeek(
-    @RequestParam("startOfWeek") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startOfWeek) {
+            @RequestParam("startOfWeek") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startOfWeek) {
 
-    // Calcular el final de la semana (7 días después)
-    LocalDateTime endOfWeek = startOfWeek.plusDays(7);
+        List<Reserve> reserves = reserveService.getReservesByWeek(startOfWeek);
 
-    // Buscar reservas que se solapen con la semana
-    List<Reserve> reserves = reserveService.getReservesByWeek(startOfWeek, endOfWeek);
-
-    return reserves.isEmpty() 
-        ? ResponseEntity.noContent().build() 
-        : ResponseEntity.ok(reserves);
+        return reserves.isEmpty()
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.ok(reserves);
     }
 
     /**
@@ -158,19 +156,14 @@ public class ReserveController {
      */
     @GetMapping("/hour")
     public ResponseEntity<List<Reserve>> getReservesByHour(
-    @RequestParam("startOfHour") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startOfHour) {
+            @RequestParam("startOfHour") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startOfHour) {
 
-    // Calcular el final de la hora
-    LocalDateTime endOfHour = startOfHour.plusHours(1);
+        List<Reserve> reserves = reserveService.getReservesByHour(startOfHour);
 
-    // Buscar reservas que se solapen con el intervalo [startOfHour, endOfHour)
-    List<Reserve> reserves = reserveService.getReservesByHour(startOfHour, endOfHour);
-
-    return reserves.isEmpty() 
-        ? ResponseEntity.noContent().build() 
-        : ResponseEntity.ok(reserves);
-}
-
+        return reserves.isEmpty()
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.ok(reserves);
+    }
     /**
      * Get reserves for the current day.
      *
