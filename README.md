@@ -87,7 +87,7 @@ We have several databases in our cluster. For now, we'll only use one main datab
 
 EXAMPLE:
 
-````json
+```json
 {
   "_id": "67ea2262f7e12b7aaea3359a",
   "userId": "67e792baaf54840a261100aa",
@@ -98,6 +98,7 @@ EXAMPLE:
   "repetitive": false,
   "purpose": "prueba:(",
 }
+```
 
 </br>
 
@@ -765,7 +766,7 @@ To make the application easier to understand, in this section we will summarize 
 
 The deployment is done in Azure Web Service, so we were able to automatically integrate it into the GitHub workflow. That is, we created a pipeline that would perform a general validation of a Maven project's lifecycle and deploy it based on the tokens we have stored. Any host change only requires changing those keys.
 
-![Deploy](/docs/Screenshoots/deploy.png)
+![Deploy](/docs/Screenshots/deploy.png)
 
 </br>
 </br>
