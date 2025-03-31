@@ -15,11 +15,13 @@ This file documents the operation and construction of the backend of the project
 
 ## Installation and configuration
 
-Before download this repo, make sure you have installed:  
-- **Java 17+**  
-- **Maven 3.9.x**
+Before download this repo, make sure you have installed:
 
-Then you have to clone the repository:  
+-   **Java 17+**
+-   **Maven 3.9.x**
+
+Then you have to clone the repository:
+
 ```sh
 git clone https://github.com/daviespr1406/Reservas_Sys.git
 cd Reservas_Sys
@@ -34,6 +36,7 @@ mvn clean package verify
 ```
 
 </br>
+</br>
 
 ## Project Structure
 
@@ -41,14 +44,14 @@ mvn clean package verify
 
 The project follows a modular structure to ensure maintainability and scalability. Below is a description of the main directories and files from an **API REST**:
 
-- **controller/**: Defines the controllers that handle HTTP requests and manage communication between the frontend and backend.
-- **service/**: Contains the business logic of the application. This layer processes data before interacting with the persistence layer.
-- **repository/**: Handles database interactions, providing methods for performing CRUD operations on entities.
-- **model/**: Defines the entities and data structures used in the application.
-- **config/**: Contains custom configurations such as security settings, database connections, and CORS handling.
-- **utils/**: Contains validations or identifications to facilitate the application of design patterns or tools that help us improve the quality of the app.
-- **src/main/resources/**: Configuration files and static resources.
-- **src/test/java/**: Contains unit and integration tests.
+-   **controller/**: Defines the controllers that handle HTTP requests and manage communication between the frontend and backend.
+-   **service/**: Contains the business logic of the application. This layer processes data before interacting with the persistence layer.
+-   **repository/**: Handles database interactions, providing methods for performing CRUD operations on entities.
+-   **model/**: Defines the entities and data structures used in the application.
+-   **config/**: Contains custom configurations such as security settings, database connections, and CORS handling.
+-   **utils/**: Contains validations or identifications to facilitate the application of design patterns or tools that help us improve the quality of the app.
+-   **src/main/resources/**: Configuration files and static resources.
+-   **src/test/java/**: Contains unit and integration tests.
 
 This structure ensures a clear separation of concerns, making the development and maintenance of the REST API more efficient.
 
@@ -66,15 +69,36 @@ The architecture represented in the image is a client-server architecture with a
 
 The structure of the data that goes into persistence has an already defined structure that, in theory, is adjusted from the front end to ensure that everything works correctly.
 We have several databases in our cluster. For now, we'll only use one main database called "ISIBook," which will work until the specific schedules are implemented. In this database, we have the following documents:
-- **Reserves**: Data related to reservations made by a user.
 
+-   **Reserves**: Data related to reservations made by a user.
 
 ```json
 {
-    s
+  "_id": <STRING>,
+  "userId": <STRING>,
+  "classroomId": <STRING>,
+  "startDate": <DATE>,
+  "finishDate": <DATE>,
+  "status": <STRING>,
+  "repetitive": <BOOLEAN>,
+  "purpose": <STRING>,
 }
 ```
 
+EXAMPLE:
+
+```json
+{
+  "_id": "67ea2262f7e12b7aaea3359a",
+  "userId": "67e792baaf54840a261100aa",
+  "classroomId": "67d155f2e5f1de4bf18c0dd1",
+  "startDate": "2025-04-01T07:00:00.000+00:00",
+  "finishDate": "2025-04-01T08:30:00.000+00:00",
+  "status": "PENDING",
+  "repetitive": false,
+  "purpose": "prueba:(",
+}
+```
 
 </br>
 
@@ -98,34 +122,32 @@ We have several databases in our cluster. For now, we'll only use one main datab
         "airConditioning":<STRING>
     }
 }
-```
+````
 
 EXAMPLE:
 
 ```json
 {
     "_id": {
-        "$oid":"67d15664e4df91310a73ccdc"
+        "$oid": "67d15664e4df91310a73ccdc"
     },
-    "name":"H301",
-    "build":"H",
+    "name": "H301",
+    "build": "H",
     "specs": {
-        "capacity":"45",
-        "type":"Laboratory",
-        "numComputers":"40",
-        "pcTypes":"Laptop",
-        "projector":true,
-        "touchScreen":false,
-        "airConditioning":"Complete"
+        "capacity": "45",
+        "type": "Laboratory",
+        "numComputers": "40",
+        "pcTypes": "Laptop",
+        "projector": true,
+        "touchScreen": false,
+        "airConditioning": "Complete"
     }
 }
 ```
 
-
 </br>
 
-
-- **Users**: Created by a super administrator and divided into two types, admin and teacher.
+-   **Users**: Created by a super administrator and divided into two types, admin and teacher.
 
 #### ADMIN
 
@@ -148,16 +170,16 @@ EXAMPLE:
 
 ```json
 {
-    "_id":{
-        "$oid":"67d160d8b3b48052db4b2adc"
+    "_id": {
+        "$oid": "67d160d8b3b48052db4b2adc"
     },
-    "name":"Aurora",
-    "password":"aA0."
-    ,"username":"auroraAdmin"
-    ,"register": {
-        "$date":{"$numberLong":"1741737600000"}
+    "name": "Aurora",
+    "password": "aA0.",
+    "username": "auroraAdmin",
+    "register": {
+        "$date": { "$numberLong": "1741737600000" }
     },
-    "type":"admin"
+    "type": "admin"
 }
 ```
 
@@ -184,19 +206,20 @@ EXAMPLE:
 ```json
 {
     "_id": {
-        "$oid":"67d16201b3b48052db4b2add"
+        "$oid": "67d16201b3b48052db4b2add"
     },
-    "name":"Andres Felipe Chavarro",
-    "password":"Ac9.",
-    "username":"andres.chavarro-p",
+    "name": "Andres Felipe Chavarro",
+    "password": "Ac9.",
+    "username": "andres.chavarro-p",
     "register": {
-        "$date":{"$numberLong":"1741737600000"}
+        "$date": { "$numberLong": "1741737600000" }
     },
-    "mail":"andres.chavarro-p@escuelaing.edu.co",
-    "status":"active",
-    "type":"teacher"
+    "mail": "andres.chavarro-p@escuelaing.edu.co",
+    "status": "active",
+    "type": "teacher"
 }
 ```
+
 </br>
 
 #### Model
@@ -209,6 +232,7 @@ This is the model designed and used for reference of the database built in Mongo
 </br>
 
 ## Endpoints
+
 To make the application easier to understand, in this section we will summarize all the possible endpoints for use in any frontend.
 
 ### Reserves
@@ -216,8 +240,9 @@ To make the application easier to understand, in this section we will summarize 
 </br>
 
 #### `GET /api/reserves`
-- **Description**: Retrieve all reserves.
-- **Successful Response**:
+
+-   **Description**: Retrieve all reserves.
+-   **Successful Response**:
     ```json
     [
         {
@@ -238,16 +263,17 @@ To make the application easier to understand, in this section we will summarize 
         }
     ]
     ```
-- **Error Responses**:
-    - 204 No Content: No reserves available.
+-   **Error Responses**:
+    -   204 No Content: No reserves available.
 
 </br>
 
 #### `GET /api/reserves/{id}`
-- **Description**: Retrieve a reserve by ID
-- **Path Parameters**:
-    - `id` _(required)_: ID of the reserve to retrieve.
-- **Successful Response**:
+
+-   **Description**: Retrieve a reserve by ID
+-   **Path Parameters**:
+    -   `id` _(required)_: ID of the reserve to retrieve.
+-   **Successful Response**:
     ```json
     {
         "id": "1",
@@ -258,16 +284,17 @@ To make the application easier to understand, in this section we will summarize 
         "status": "confirmed"
     }
     ```
-- **Error Responses**:
-    - 404 Not Found: Reserve not found with the specified ID.
+-   **Error Responses**:
+    -   404 Not Found: Reserve not found with the specified ID.
 
 </br>
 
 #### `GET /api/reserves/user/{userId}`
-- **Description**: Retrieve all reserves made by a specific user.
-- **Path Parameters**:
-    - `userId` _(required)_: ID of the user whose reserves are to be retrieved.
-- **Successful Response**:
+
+-   **Description**: Retrieve all reserves made by a specific user.
+-   **Path Parameters**:
+    -   `userId` _(required)_: ID of the user whose reserves are to be retrieved.
+-   **Successful Response**:
     ```json
     [
         {
@@ -288,16 +315,17 @@ To make the application easier to understand, in this section we will summarize 
         }
     ]
     ```
-- **Error Responses**:
-    - 204 No Content: No reserves found for the specified user.
+-   **Error Responses**:
+    -   204 No Content: No reserves found for the specified user.
 
 </br>
 
 #### `GET /api/reserves/classroom/{classroomId}`
-- **Description**: Retrieve all reservations for a specific classroom.
-- **Path Parameters**:
-    - `classroomId` _(required)_: ID of the classroom whose reservations are to be retrieved.
-- **Successful Response**:
+
+-   **Description**: Retrieve all reservations for a specific classroom.
+-   **Path Parameters**:
+    -   `classroomId` _(required)_: ID of the classroom whose reservations are to be retrieved.
+-   **Successful Response**:
     ```json
     [
         {
@@ -318,14 +346,15 @@ To make the application easier to understand, in this section we will summarize 
         }
     ]
     ```
-- **Error Responses**:
-    - 204 No Content: No reservations found for the specified classroom.
+-   **Error Responses**:
+    -   204 No Content: No reservations found for the specified classroom.
 
 </br>
 
 #### `POST /api/reserves`
-- **Description**: Create a new reservation.
-- **Request Body**:
+
+-   **Description**: Create a new reservation.
+-   **Request Body**:
     ```json
     {
         "userId": "67d16201b3b48052db4b2add",
@@ -334,7 +363,7 @@ To make the application easier to understand, in this section we will summarize 
         "timeSlot": "08:00-10:00"
     }
     ```
-- **Successful Response**:
+-   **Successful Response**:
     ```json
     {
         "id": "1",
@@ -345,27 +374,29 @@ To make the application easier to understand, in this section we will summarize 
         "status": "confirmed"
     }
     ```
-- **Error Responses**:
-    - 400 Bad Request: Invalid reservation details.
+-   **Error Responses**:
+    -   400 Bad Request: Invalid reservation details.
 
 </br>
 
 #### `DELETE /api/reserves/{id}`
-- **Description**: Delete a reservation by its ID.
-- **Path Parameters**:
-    - `id` _(required)_: ID of the reservation to be deleted.
-- **Successful Response**:
-    - 204 No Content: Reservation successfully deleted.
-- **Error Responses**:
-    - 404 Not Found: Reservation not found with the specified ID.
+
+-   **Description**: Delete a reservation by its ID.
+-   **Path Parameters**:
+    -   `id` _(required)_: ID of the reservation to be deleted.
+-   **Successful Response**:
+    -   204 No Content: Reservation successfully deleted.
+-   **Error Responses**:
+    -   404 Not Found: Reservation not found with the specified ID.
 
 </br>
 
 #### `PUT /api/reserves/{id}`
-- **Description**: Update an existing reservation by its ID.
-- **Path Parameters**:
-    - `id` _(required)_: ID of the reservation to update.
-- **Request Body**:
+
+-   **Description**: Update an existing reservation by its ID.
+-   **Path Parameters**:
+    -   `id` _(required)_: ID of the reservation to update.
+-   **Request Body**:
     ```json
     {
         "userId": "67d16201b3b48052db4b2add",
@@ -375,7 +406,7 @@ To make the application easier to understand, in this section we will summarize 
         "status": "confirmed"
     }
     ```
-- **Successful Response**:
+-   **Successful Response**:
     ```json
     {
         "id": "1",
@@ -386,16 +417,17 @@ To make the application easier to understand, in this section we will summarize 
         "status": "confirmed"
     }
     ```
-- **Error Responses**:
-    - 404 Not Found: Reservation not found with the specified ID.
+-   **Error Responses**:
+    -   404 Not Found: Reservation not found with the specified ID.
 
 </br>
 
 #### `GET /api/reserves/week`
-- **Description**: Retrieve all reservations for a specific week.
-- **Query Parameters**:
-    - `startOfWeek` _(required)_: Start date of the week in ISO 8601 format (e.g., `2025-03-10T00:00:00`).
-- **Successful Response**:
+
+-   **Description**: Retrieve all reservations for a specific week.
+-   **Query Parameters**:
+    -   `startOfWeek` _(required)_: Start date of the week in ISO 8601 format (e.g., `2025-03-10T00:00:00`).
+-   **Successful Response**:
     ```json
     [
         {
@@ -416,17 +448,18 @@ To make the application easier to understand, in this section we will summarize 
         }
     ]
     ```
-- **Error Responses**:
-    - 204 No Content: No reservations found for the specified week.
-    - 400 Bad Request: Invalid date format for `startOfWeek`. Ensure it follows the ISO 8601 format (e.g., `2025-03-10T00:00:00`).
+-   **Error Responses**:
+    -   204 No Content: No reservations found for the specified week.
+    -   400 Bad Request: Invalid date format for `startOfWeek`. Ensure it follows the ISO 8601 format (e.g., `2025-03-10T00:00:00`).
 
 </br>
 
 #### `GET /api/reserves/hour`
-- **Description**: Retrieve all reservations for a specific hour.
-- **Query Parameters**:
-    - `startOfHour` _(required)_: Start of the hour in ISO 8601 format (e.g., `2025-03-12T08:00:00`).
-- **Successful Response**:
+
+-   **Description**: Retrieve all reservations for a specific hour.
+-   **Query Parameters**:
+    -   `startOfHour` _(required)_: Start of the hour in ISO 8601 format (e.g., `2025-03-12T08:00:00`).
+-   **Successful Response**:
     ```json
     [
         {
@@ -447,15 +480,16 @@ To make the application easier to understand, in this section we will summarize 
         }
     ]
     ```
-- **Error Responses**:
-    - 204 No Content: No reservations found for the specified hour.
-    - 400 Bad Request: Invalid date-time format for `startOfHour`. Ensure it follows the ISO 8601 format (e.g., `2025-03-12T08:00:00`).
+-   **Error Responses**:
+    -   204 No Content: No reservations found for the specified hour.
+    -   400 Bad Request: Invalid date-time format for `startOfHour`. Ensure it follows the ISO 8601 format (e.g., `2025-03-12T08:00:00`).
 
 </br>
 
 #### `GET /api/reserves/today`
-- **Description**: Retrieve all reservations for the current day.
-- **Successful Response**:
+
+-   **Description**: Retrieve all reservations for the current day.
+-   **Successful Response**:
     ```json
     [
         {
@@ -476,10 +510,9 @@ To make the application easier to understand, in this section we will summarize 
         }
     ]
     ```
-- **Error Responses**:
-    - 204 No Content: No reservations found for today.
-    - 500 Internal Server Error: Failed to retrieve reservations.
-
+-   **Error Responses**:
+    -   204 No Content: No reservations found for today.
+    -   500 Internal Server Error: Failed to retrieve reservations.
 
 </br>
 
@@ -489,80 +522,81 @@ To make the application easier to understand, in this section we will summarize 
 
 </br>
 
-  #### `POST /api/classrooms`
-- **Description**: Create a new classroom.
-- **Request Body**:
-  ```json
-  {
-    "id": "101",
-    "name": "Computer Lab 1",
-    "building": "Main Building",
-    "capacity": 30,
-    "features": ["Projector", "Air Conditioning"],
-  }
-  ```
-- **Successful Response**:
+#### `POST /api/classrooms`
+
+-   **Description**: Create a new classroom.
+-   **Request Body**:
     ```json
     {
-      "id": "101",
-      "name": "Computer Lab 1",
-      "building": "Main Building",
-      "capacity": 30,
-      "features": ["Projector", "Air Conditioning"],
+        "id": "101",
+        "name": "Computer Lab 1",
+        "building": "Main Building",
+        "capacity": 30,
+        "features": ["Projector", "Air Conditioning"]
     }
     ```
-- **Error Responses**:
-    - 400 Bad Request: Invalid request body.
+-   **Successful Response**:
+    ```json
+    {
+        "id": "101",
+        "name": "Computer Lab 1",
+        "building": "Main Building",
+        "capacity": 30,
+        "features": ["Projector", "Air Conditioning"]
+    }
+    ```
+-   **Error Responses**:
+    -   400 Bad Request: Invalid request body.
 
 </br>
 
-#### `GET /api/classrooms`  
-- **Description**: Retrieve all classrooms.  
-- **Successful Response**:  
-    ```json  
-      {  
-        "id": "101",  
-        "name": "Computer Lab 1",  
-        "building": "Main Building",  
-        "capacity": 30,  
-        "features": ["Projector", "Air Conditioning"],  
-        "schedules": {  
-            "Monday": ["08:00-10:00", "14:00-16:00"],  
-            "Wednesday": ["10:00-12:00"]  
-        }  
-      },  
-      {  
-        "id": "102",  
-        "name": "Lecture Hall 2",  
-        "building": "Science Building",  
-        "capacity": 50,  
-        "features": ["Whiteboard", "Microphone"],  
-      }  
+#### `GET /api/classrooms`
+
+-   **Description**: Retrieve all classrooms.
+-   **Successful Response**:
+    ```json
+      {
+        "id": "101",
+        "name": "Computer Lab 1",
+        "building": "Main Building",
+        "capacity": 30,
+        "features": ["Projector", "Air Conditioning"],
+        "schedules": {
+            "Monday": ["08:00-10:00", "14:00-16:00"],
+            "Wednesday": ["10:00-12:00"]
+        }
+      },
+      {
+        "id": "102",
+        "name": "Lecture Hall 2",
+        "building": "Science Building",
+        "capacity": 50,
+        "features": ["Whiteboard", "Microphone"],
+      }
     ```
-- **Error Responses**:
-    - 204 No Content: No classrooms available.
+-   **Error Responses**:
+    -   204 No Content: No classrooms available.
 
 </br>
 
-#### `GET /api/classrooms/building`  
-- **Description**: Retrieve all classrooms in a specific building.  
-- **Query Parameters**:  
-    - `build` _(required)_: Building name to filter classrooms.  
-- **Successful Response**:  
-    ```json  
-      {  
-          "id": "101",  
-          "name": "Computer Lab 1",  
-          "building": "Main Building",  
-          "capacity": 30,  
-          "features": ["Projector", "Air Conditioning"],  
-        }  
+#### `GET /api/classrooms/building`
+
+-   **Description**: Retrieve all classrooms in a specific building.
+-   **Query Parameters**:
+    -   `build` _(required)_: Building name to filter classrooms.
+-   **Successful Response**:
+    ```json
+    {
+        "id": "101",
+        "name": "Computer Lab 1",
+        "building": "Main Building",
+        "capacity": 30,
+        "features": ["Projector", "Air Conditioning"]
+    }
     ```
-- **Error Responses**:
-    - 400 Bad Request: Missing or invalid query parameter.
+-   **Error Responses**:
+    -   400 Bad Request: Missing or invalid query parameter.
 
-
-  
 </br>
 
 ---
@@ -571,168 +605,203 @@ To make the application easier to understand, in this section we will summarize 
 
 </br>
 
+#### `GET /api/users`
 
-#### `GET /api/users`  
-- **Description**: Retrieve all registered users.  
-- **Successful Response**:  
-    ```json  
-    {  
-        "_id": {  
-            "$oid": "67d16201b3b48052db4b2add"  
-        },  
-        "name": "Andres Felipe Chavarro",  
-        "password": "Ac9.",  
-        "username": "andres.chavarro-p",  
-        "register": {  
-            "$date": { "$numberLong": "1741737600000" }  
-        },  
-        "mail": "andres.chavarro-p@escuelaing.edu.co",  
-        "status": "active",  
-        "type": "teacher"  
-    },  
-    {  
-        "_id": {  
-            "$oid": "67d160d8b3b48052db4b2adc"  
-        },  
-        "name": "Aurora",  
-        "password": "aA0.",  
-        "username": "auroraAdmin",  
-        "register": {  
-            "$date": { "$numberLong": "1741737600000" }  
-        },  
-        "type": "admin"  
-    }  
-    ```
-- **Error Responses**:
-    - 204 No Content: No users available.
- 
-</br>
-
-#### `GET /api/users/{id}`  
-- **Description**: Retrieve a user by ID.  
-- **Path Parameters**:  
-    - `id` _(required)_: ID of the user to retrieve.  
-- **Successful Response**:  
-    ```json  
-    {  
-        "_id": {  
-            "$oid": "67d16201b3b48052db4b2add"  
-        },  
-        "name": "Andres Felipe Chavarro",  
-        "password": "Ac9.",  
-        "username": "andres.chavarro-p",  
-        "register": {  
-            "$date": { "$numberLong": "1741737600000" }  
-        },  
-        "mail": "andres.chavarro-p@escuelaing.edu.co",  
-        "status": "active",  
-        "type": "teacher"  
-    }  
-    ```
-- **Error Responses**:
-    - 404 Not Found: User not found with the specified ID.
- 
-</br>
-
-#### `POST /api/users`  
-- **Description**: Create a new user.  
-- **Request Body**:  
-    ```json  
-    {  
-        "name": "Andres Felipe Chavarro",  
-        "password": "Ac9.",  
-        "username": "andres.chavarro-p",  
-        "register": {  
-            "$date": { "$numberLong": "1741737600000" }  
-        },  
-        "mail": "andres.chavarro-p@escuelaing.edu.co",  
-        "status": "active",  
-        "type": "teacher"  
-    }  
-    ```
-- **Successful Response**:
+-   **Description**: Retrieve all registered users.
+-   **Successful Response**:
     ```json
-    {  
-        "_id": {  
-            "$oid": "67d16201b3b48052db4b2add"  
-        },  
-        "name": "Andres Felipe Chavarro",  
-        "password": "Ac9.",  
-        "username": "andres.chavarro-p",  
-        "register": {  
-            "$date": { "$numberLong": "1741737600000" }  
-        },  
-        "mail": "andres.chavarro-p@escuelaing.edu.co",  
-        "status": "active",  
-        "type": "teacher"  
-    }  
+    {
+        "_id": {
+            "$oid": "67d16201b3b48052db4b2add"
+        },
+        "name": "Andres Felipe Chavarro",
+        "password": "Ac9.",
+        "username": "andres.chavarro-p",
+        "register": {
+            "$date": { "$numberLong": "1741737600000" }
+        },
+        "mail": "andres.chavarro-p@escuelaing.edu.co",
+        "status": "active",
+        "type": "teacher"
+    },
+    {
+        "_id": {
+            "$oid": "67d160d8b3b48052db4b2adc"
+        },
+        "name": "Aurora",
+        "password": "aA0.",
+        "username": "auroraAdmin",
+        "register": {
+            "$date": { "$numberLong": "1741737600000" }
+        },
+        "type": "admin"
+    }
     ```
-- **Error Responses**:
-    - 400 Bad Request: Invalid request body.
+-   **Error Responses**:
+    -   204 No Content: No users available.
 
 </br>
 
-#### `PUT /api/users/{id}`  
-- **Description**: Update an existing user by ID.  
-- **Path Parameters**:  
-    - `id` _(required)_: ID of the user to update.  
-- **Request Body**:  
-    ```json  
-    {  
-        "name": "Andres Felipe Chavarro",  
-        "password": "Ac9.",  
-        "username": "andres.chavarro-p",  
-        "register": {  
-            "$date": { "$numberLong": "1741737600000" }  
-        },  
-        "mail": "andres.chavarro-p@escuelaing.edu.co",  
-        "status": "active",  
-        "type": "teacher"  
-    }  
-    ```
-- **Successful Response**:
+#### `GET /api/users/{id}`
+
+-   **Description**: Retrieve a user by ID.
+-   **Path Parameters**:
+    -   `id` _(required)_: ID of the user to retrieve.
+-   **Successful Response**:
     ```json
-    {  
-        "_id": {  
-            "$oid": "67d16201b3b48052db4b2add"  
-        },  
-        "name": "Andres Felipe Chavarro",  
-        "password": "Ac9.",  
-        "username": "andres.chavarro-p",  
-        "register": {  
-            "$date": { "$numberLong": "1741737600000" }  
-        },  
-        "mail": "andres.chavarro-p@escuelaing.edu.co",  
-        "status": "active",  
-        "type": "teacher"  
-    }  
+    {
+        "_id": {
+            "$oid": "67d16201b3b48052db4b2add"
+        },
+        "name": "Andres Felipe Chavarro",
+        "password": "Ac9.",
+        "username": "andres.chavarro-p",
+        "register": {
+            "$date": { "$numberLong": "1741737600000" }
+        },
+        "mail": "andres.chavarro-p@escuelaing.edu.co",
+        "status": "active",
+        "type": "teacher"
+    }
     ```
-- **Error Responses**:
-    - 400 Bad Request: Invalid request body or ID format.
+-   **Error Responses**:
+    -   404 Not Found: User not found with the specified ID.
 
 </br>
 
-#### `DELETE /api/users/username/{username}`  
-- **Description**: Delete a user by username.  
-- **Path Parameters**:  
-    - `username` _(required)_: Username of the user to delete.  
-- **Successful Response**:  
-    - 204 No Content: User deleted successfully.  
-- **Error Responses**:  
-    - 404 Not Found: User not found with the specified username.
+#### `POST /api/users`
+
+-   **Description**: Create a new user.
+-   **Request Body**:
+    ```json
+    {
+        "name": "Andres Felipe Chavarro",
+        "password": "Ac9.",
+        "username": "andres.chavarro-p",
+        "register": {
+            "$date": { "$numberLong": "1741737600000" }
+        },
+        "mail": "andres.chavarro-p@escuelaing.edu.co",
+        "status": "active",
+        "type": "teacher"
+    }
+    ```
+-   **Successful Response**:
+    ```json
+    {
+        "_id": {
+            "$oid": "67d16201b3b48052db4b2add"
+        },
+        "name": "Andres Felipe Chavarro",
+        "password": "Ac9.",
+        "username": "andres.chavarro-p",
+        "register": {
+            "$date": { "$numberLong": "1741737600000" }
+        },
+        "mail": "andres.chavarro-p@escuelaing.edu.co",
+        "status": "active",
+        "type": "teacher"
+    }
+    ```
+-   **Error Responses**:
+    -   400 Bad Request: Invalid request body.
+
+</br>
+
+#### `PUT /api/users/{id}`
+
+-   **Description**: Update an existing user by ID.
+-   **Path Parameters**:
+    -   `id` _(required)_: ID of the user to update.
+-   **Request Body**:
+    ```json
+    {
+        "name": "Andres Felipe Chavarro",
+        "password": "Ac9.",
+        "username": "andres.chavarro-p",
+        "register": {
+            "$date": { "$numberLong": "1741737600000" }
+        },
+        "mail": "andres.chavarro-p@escuelaing.edu.co",
+        "status": "active",
+        "type": "teacher"
+    }
+    ```
+-   **Successful Response**:
+    ```json
+    {
+        "_id": {
+            "$oid": "67d16201b3b48052db4b2add"
+        },
+        "name": "Andres Felipe Chavarro",
+        "password": "Ac9.",
+        "username": "andres.chavarro-p",
+        "register": {
+            "$date": { "$numberLong": "1741737600000" }
+        },
+        "mail": "andres.chavarro-p@escuelaing.edu.co",
+        "status": "active",
+        "type": "teacher"
+    }
+    ```
+-   **Error Responses**:
+    -   400 Bad Request: Invalid request body or ID format.
+
+</br>
+
+#### `DELETE /api/users/username/{username}`
+
+-   **Description**: Delete a user by username.
+-   **Path Parameters**:
+    -   `username` _(required)_: Username of the user to delete.
+-   **Successful Response**:
+    -   204 No Content: User deleted successfully.
+-   **Error Responses**:
+    -   404 Not Found: User not found with the specified username.
 
 </br>
 </br>
 
-## Test Driven Development
+## Deploy
+
+The deployment is done in Azure Web Service, so we were able to automatically integrate it into the GitHub workflow. That is, we created a pipeline that would perform a general validation of a Maven project's lifecycle and deploy it based on the tokens we have stored. Any host change only requires changing those keys.
+
+![Deploy](/docs/Screenshots/deploy.png)
+
+</br>
+</br>
+
+## Good practices
+
+In this project we try to take the concept of clean code to the maximum, that is, we seek to apply design patterns and use programming principles that can help us achieve this objective, some examples are the following:
+
+</br>
+
+### Test Driven Development
+
 We will use this development standard with unit tests to be able to develop the application in the best possible way. For example, initially unit tests are performed and they will obviously fail. After implementing the code without having to modify the tests, the application must be able to be packaged and not give errors.
 
 ![Jacoco test](/docs/Screenshots/jacoco.png)
 
 </br>
 
-## Sonar
+### Sonar
+
 We use a static code analysis tool like Sonar, which allows us to validate functionality, troubleshoot various issues, confirm the correct use of design patterns, and create clean code.
 This analysis is automatically generated by a pipeline every time a PR is submitted to development.
 
 ![Sonar image](/docs/Screenshots/sonar.png)
+
+</br>
+
+### Documentation
+
+All code is documented according to Java standards, so any developer can access and validate the application's internal workings. Likewise, this document serves as a sample documentation so anyone can understand how the app works without needing to understand the technical details behind how things work.
+
+</br>
+</br>
+
+## Security
+
+This app validates user login using Spring Security, so we generate a JWT token that the front-end client must store to maintain information about the logged-in user and allow them to make the requests necessary for the system to function properly.
+This app validates user login using Spring Security, so we generate a JWT token that the front-end client must store to maintain information about the logged-in user and allow them to make the requests necessary for the system to function properly.
