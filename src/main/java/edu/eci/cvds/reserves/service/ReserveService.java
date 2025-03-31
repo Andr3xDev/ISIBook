@@ -153,7 +153,6 @@ public class ReserveService {
      * @return a list of reserves for the hour
      */
     public List<Reserve> getReservesByHour(LocalDateTime startOfHour) {
-        LocalDateTime endOfHour = startOfHour.plusHours(1).plusMinutes(30);
         return reserveRepository.findByStartDate(startOfHour);
     }
 
