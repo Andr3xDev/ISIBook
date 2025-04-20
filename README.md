@@ -8,7 +8,10 @@
 </br>
 
 > [!IMPORTANT]  
-> This is a copy from the original repository, this is the link source: https://github.com/daviespr1406/Reservas_Sys.
+> This is a copy from the original repository, this is the link source:
+> - Backend https://github.com/daviespr1406/Reservas_Sys.
+> 
+> Also, this is the front repository: https://github.com/daviespr1406/Reservas_SysGuiReact/tree/develop
 
 </br>
 
